@@ -1,0 +1,4 @@
+hostname {{ hostname }}
+!
+interface loopback0
+  ip address {{ lo0_ip }}/32
