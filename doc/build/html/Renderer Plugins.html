@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Renderer Plugins &#8212; TTR 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Templates Loader Plugins" href="Templates Loader Plugins.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Templates Loader Plugins.html" title="Templates Loader Plugins"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="renderer-plugins">
+<h1>Renderer Plugins<a class="headerlink" href="#renderer-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Renderers responsible for combining data with templates and
+producing text output.</p>
+<span class="target" id="module-ttr.plugins.renderers.jinja2_renderer"></span><div class="section" id="jinja2-renderer-plugin">
+<h2>Jinja2 Renderer Plugin<a class="headerlink" href="#jinja2-renderer-plugin" title="Permalink to this headline">¶</a></h2>
+<p><strong>Prerequisites:</strong></p>
+<ul class="simple">
+<li><p>Requires <a class="reference external" href="https://pypi.org/project/Jinja2/">jinja2</a> library</p></li>
+</ul>
+<p>This renderer uses Jinja2 templates to render data and produce
+text results.</p>
+<p>For example, if this is a data to render expressed in YAML format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">interface</span><span class="p">:</span> <span class="n">Gi1</span><span class="o">/</span><span class="mi">1</span>
+  <span class="n">description</span><span class="p">:</span> <span class="n">Customer</span> <span class="n">A</span>
+  <span class="n">dot1q</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="n">ip</span><span class="p">:</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">mask</span><span class="p">:</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span>
+  <span class="n">vrf</span><span class="p">:</span> <span class="n">cust_a</span>
+  <span class="n">template</span><span class="p">:</span> <span class="n">ttr</span><span class="p">:</span><span class="o">//</span><span class="n">interfaces</span><span class="o">.</span><span class="n">cisco_ios</span>
+  <span class="n">device</span><span class="p">:</span> <span class="n">rt</span><span class="o">-</span><span class="mi">1</span>
+<span class="o">-</span> <span class="n">interface</span><span class="p">:</span> <span class="n">Gi1</span><span class="o">/</span><span class="mi">2</span>
+  <span class="n">description</span><span class="p">:</span> <span class="n">Customer</span> <span class="n">B</span>
+  <span class="n">dot1q</span><span class="p">:</span> <span class="mi">200</span>
+  <span class="n">ip</span><span class="p">:</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">2.1</span>
+  <span class="n">mask</span><span class="p">:</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span>
+  <span class="n">vrf</span><span class="p">:</span> <span class="n">cust_b</span>
+  <span class="n">template</span><span class="p">:</span> <span class="n">ttr</span><span class="p">:</span><span class="o">//</span><span class="n">interfaces</span><span class="o">.</span><span class="n">cisco_ios</span>
+  <span class="n">device</span><span class="p">:</span> <span class="n">rt</span><span class="o">-</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">template_name_key</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">template</span></code> key in above data,
+<code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">device</span></code> key in above data.</p>
+<p>And this is the content of <code class="docutils literal notranslate"><span class="pre">ttr://interfaces.cisco_ios</span></code> template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>interface {{ interface }}
+ description {{ description }}
+ encapsulation dot1q {{ vid }}
+ vrf forwarding  {{ vrf }}
+ ip address {{ ip }} {{ mask }}
+ ipv6 address {{ ipv6 }}/{{ maskv6 }}
+!
+</pre></div>
+</div>
+<p>This renderer will combine each item in above data with
+<code class="docutils literal notranslate"><span class="pre">ttr://interfaces.cisco_ios</span></code> template and return results for further
+processing.</p>
+</div>
+<dl class="function">
+<dt id="ttr.plugins.renderers.jinja2_renderer.render">
+<code class="descclassname">ttr.plugins.renderers.jinja2_renderer.</code><code class="descname">render</code><span class="sig-paren">(</span><em>data</em>, <em>template_name_key</em>, <em>templates_dir</em>, <em>templates_dict</em>, <em>result_name_key</em>, <em>**renderer_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ttr.plugins.renderers.jinja2_renderer.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render function takes data, templates and produces text output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – (list), list of dictionaries render</p></li>
+<li><p><strong>templates_dict</strong> – (dict), dictionary keyed by template name with template content as a value</p></li>
+<li><p><strong>template_name_key</strong> – (str), name of template key to use for data rendering, default - <code class="docutils literal notranslate"><span class="pre">template</span></code></p></li>
+<li><p><strong>result_name_key</strong> – (str), name of result key to use to combine rendering results, default - <code class="docutils literal notranslate"><span class="pre">device</span></code></p></li>
+<li><p><strong>renderer_kwargs</strong> – (dict), kwargs to pass on to <code class="docutils literal notranslate"><span class="pre">jinja2.Template(..,</span> <span class="pre">**kwargs)</span></code> object instantiation</p></li>
+</ul>
+</dd>
+</dl>
+<p>By default <code class="docutils literal notranslate"><span class="pre">renderer_kwargs</span></code> will include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;trim_blocks&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;lstrip_blocks&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Renderer Plugins</a><ul>
+<li><a class="reference internal" href="#jinja2-renderer-plugin">Jinja2 Renderer Plugin</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Templates Loader Plugins.html"
+                        title="previous chapter">Templates Loader Plugins</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Renderer Plugins.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Templates Loader Plugins.html" title="Templates Loader Plugins"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Denis Mulyalin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.0.
+    </div>
+  </body>
+</html>

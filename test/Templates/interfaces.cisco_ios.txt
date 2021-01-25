@@ -1,0 +1,18 @@
+interface {{ interface }}
+{% if description is defined %}
+ description {{ description }}
+{% endif %}
+{% if vid is defined %}
+ encapsulation dot1q {{ vid }}
+{% endif %}
+{% if vrf is defined %}
+ vrf forwarding  {{ vrf }}
+{% endif %}
+{% if ip is defined and mask is defined %}
+ ip address {{ ip }} {{ mask }}
+{% endif %}
+{% if ipv6 is defined and maskv6 is defined %}
+ ipv6 address {{ ipv6 }}/{{ maskv6 }}
+{% endif %}
+ exit
+!

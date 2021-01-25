@@ -1,0 +1,7 @@
+interface Gi1/2
+ description Customer B
+ encapsulation dot1q 200
+ vrf forwarding  cust_b
+ ip address 10.0.2.1 255.255.255.0
+ exit
+!

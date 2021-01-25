@@ -2,10 +2,10 @@ import sys
 sys.path.insert(0,'../')
 import pprint
 
-from eborn import eborn
+from ttr import ttr
 
 def test_context_manager_1():
-    with eborn("./mock_data/csv_data_1.csv") as g:
+    with ttr("./mock_data/csv_data_1.csv") as g:
         assert g.data_loaded == [
             {'device': 'r1', 'hostname': 'r1', 'lo0_ip': '1.1.1.1', 'template': 'foo'},
             {'device': 'r2', 'hostname': 'r2', 'lo0_ip': '2.2.2.2', 'template': 'bar'},

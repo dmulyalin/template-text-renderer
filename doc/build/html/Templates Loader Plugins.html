@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Templates Loader Plugins &#8212; TTR 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Renderer Plugins" href="Renderer Plugins.html" />
+    <link rel="prev" title="Data Loader Plugins" href="Data Loader Plugins.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Renderer Plugins.html" title="Renderer Plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Data Loader Plugins.html" title="Data Loader Plugins"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="templates-loader-plugins">
+<h1>Templates Loader Plugins<a class="headerlink" href="#templates-loader-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Template loaders responsible for loading template text from various sources.</p>
+<span class="target" id="module-ttr.plugins.templates.base_template_loader"></span><div class="section" id="base-template-loader">
+<h2>Base Template Loader<a class="headerlink" href="#base-template-loader" title="Permalink to this headline">¶</a></h2>
+<p>Base loader loads templates from <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files supported by this loader.</p>
+</div>
+<p>This loader searches for templates in this order:</p>
+<ol class="arabic simple" start="0">
+<li><p>Check if template with given name already loaded, use it if so</p></li>
+<li><p>Check if template name starts with <code class="docutils literal notranslate"><span class="pre">ttr://</span></code>, load it from TTR package if so</p></li>
+<li><p>If template name references file, load it</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">templates_dir</span></code> as a directory to search for template file.</p></li>
+</ol>
+<p>For cases 1 and 3 template name can omit extension, base loader will assume
+<code class="docutils literal notranslate"><span class="pre">.txt</span></code> extension in that case.</p>
+<p>On failure to load template file, base loader will log an error message and
+TTR continue processing of other data items.</p>
+</div>
+<dl class="function">
+<dt id="ttr.plugins.templates.base_template_loader.load">
+<code class="descclassname">ttr.plugins.templates.base_template_loader.</code><code class="descname">load</code><span class="sig-paren">(</span><em>template_name</em>, <em>templates_dict</em>, <em>templates_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#ttr.plugins.templates.base_template_loader.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to locate template file and return it’s content</p>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><p>template_name (str) - OS path to template file relative to execution folder
+or to /ttr/templates/ package directory or name of template within spreadsheet</p></li>
+<li><p>templates_dir (str) - name of directory with templates</p></li>
+<li><p>templates_dict (dict) - dictionary of templates content</p></li>
+</ul>
+<p><strong>Valid combinations of template location</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">template_name=&quot;./misc/foo/bar.txt&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template_name=&quot;ttr://misc/foo/bar.txt&quot;</span></code></p></li>
+</ul>
+<p>On success loads template content in <code class="docutils literal notranslate"><span class="pre">templates_dict</span></code> and returns <code class="docutils literal notranslate"><span class="pre">True</span></code>, on failure
+returns <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Templates Loader Plugins</a><ul>
+<li><a class="reference internal" href="#base-template-loader">Base Template Loader</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Data Loader Plugins.html"
+                        title="previous chapter">Data Loader Plugins</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Renderer Plugins.html"
+                        title="next chapter">Renderer Plugins</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Templates Loader Plugins.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Renderer Plugins.html" title="Renderer Plugins"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Data Loader Plugins.html" title="Data Loader Plugins"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Denis Mulyalin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.0.
+    </div>
+  </body>
+</html>

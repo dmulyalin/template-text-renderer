@@ -1,0 +1,11 @@
+Data Loaders Plugins
+####################
+
+
+.. automodule:: eborn.plugins.data.xlsx_loader
+
+XLSX plugin API
+===============
+
+.. autofunction:: eborn.plugins.data.xlsx_loader.load
+

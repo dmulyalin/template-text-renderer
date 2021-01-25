@@ -4,13 +4,13 @@ import pprint
 import shutil
 import os
 
-from eborn import eborn
+from ttr import ttr
 
 def test_file_returner_1():
     # delete previously generated results
     if os.path.exists("./Output/test_file_returner_1"):
         shutil.rmtree("./Output/test_file_returner_1")
-    generator = eborn(
+    generator = ttr(
         "./mock_data/csv_data_1.csv", 
         returner="file", 
         returner_kwargs={
@@ -29,7 +29,7 @@ interface loopback0
         assert f.read() == ""   
         
 def test_terminal_returner_1():
-    generator = eborn(
+    generator = ttr(
         "./mock_data/csv_data_1.csv", 
         returner="terminal"
     )

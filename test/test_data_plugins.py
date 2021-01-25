@@ -2,11 +2,11 @@ import sys
 sys.path.insert(0,'../')
 import pprint
 
-from eborn import eborn
+from ttr import ttr
 
 
 def test_csv_data_plugin_load_from_file():
-    generator = eborn("./mock_data/csv_data_1.csv")
+    generator = ttr("./mock_data/csv_data_1.csv")
     assert generator.data_loaded == [
         {'device': 'r1', 'hostname': 'r1', 'lo0_ip': '1.1.1.1', 'template': 'foo'},
         {'device': 'r2', 'hostname': 'r2', 'lo0_ip': '2.2.2.2', 'template': 'bar'},
@@ -17,7 +17,7 @@ def test_csv_data_plugin_load_from_file():
 
 
 def test_openpyxl_data_plugin():
-    generator = eborn("./mock_data/table_data_1.xlsx")
+    generator = ttr("./mock_data/table_data_1.xlsx")
     # pprint.pprint(generator.data_loaded)
     assert generator.data_loaded == [{'device': 'r1', 'hostname': 'r1', 'lo0_ip': '1.1.1.1', 'template': 'foo'},
                                      {'device': 'r2', 'hostname': 'r2', 'lo0_ip': '2.2.2.2', 'template': 'bar'},
@@ -27,7 +27,7 @@ def test_openpyxl_data_plugin():
 
 
 def test_openpyxl_data_plugin_multitab_table():
-    generator = eborn("./mock_data/table_multitab_data_2.xlsx")
+    generator = ttr("./mock_data/table_multitab_data_2.xlsx")
     # pprint.pprint(generator.data_loaded)
     assert generator.data_loaded == [{'device': 'r1',
                 'hostname': 'r1',
@@ -52,7 +52,7 @@ def test_openpyxl_data_plugin_multitab_table():
 
 
 def test_openpyxl_data_plugin_templates_in_table():
-    generator = eborn("./mock_data/table_multitab_inline_templates_data_3.xlsx")
+    generator = ttr("./mock_data/table_multitab_inline_templates_data_3.xlsx")
     # pprint.pprint(generator.templates_dict)
     assert generator.templates_dict == {'test_path/device_base': 'hostname {{ hostname }}\n'
                                                                  '!\n'
@@ -92,10 +92,10 @@ def test_openpyxl_data_plugin_templates_in_table():
                                       'interface loopback0\n'
                                       '  ip address 2.2.2.2 255.255.255.255'}
     
-# test_openpyxl_data_plugin_templates_in_table()
+test_openpyxl_data_plugin_templates_in_table()
 
-def test_openpyxl_data_plugin_multiple_templates_in_headers():
-    generator = eborn("./mock_data/table_multiple_templates.xlsx")
+def test_openpyxl_data_plugin_with_multitemplate_processor():
+    generator = ttr("./mock_data/table_multiple_templates.xlsx", processors=["multitemplate"])
     # pprint.pprint(generator.data_loaded)
     assert generator.data_loaded == [{'device': 'r1',
                                       'hostname': 'r1',
@@ -169,4 +169,51 @@ def test_openpyxl_data_plugin_multiple_templates_in_headers():
                                        'interface Eth2\n'
                                        '  ip address 10.0.1.2 24'}
     
-# test_openpyxl_data_plugin_multiple_templates_in_headers()
+# test_openpyxl_data_plugin_with_multitemplate_processor()
+
+def test_yaml_data_plugin_load_from_text():
+    data = """
+- interface: Gi1/1
+  description: Customer A
+  dot1q: 100
+  ip: 10.0.0.1
+  mask: 255.255.255.0
+  vrf: cust_a
+- interface: Gi1/2
+  description: Customer B
+  dot1q: 200
+  ip: 10.0.2.1
+  mask: 255.255.255.0
+  vrf: cust_b
+    """
+    generator = ttr()
+    generator.load_data(data, data_plugin="yaml")
+    # pprint.pprint(generator.data_loaded)
+    assert generator.data_loaded == [{'description': 'Customer A',
+                                      'dot1q': 100,
+                                      'interface': 'Gi1/1',
+                                      'ip': '10.0.0.1',
+                                      'mask': '255.255.255.0',
+                                      'vrf': 'cust_a'},
+                                     {'description': 'Customer B',
+                                      'dot1q': 200,
+                                      'interface': 'Gi1/2',
+                                      'ip': '10.0.2.1',
+                                      'mask': '255.255.255.0',
+                                      'vrf': 'cust_b'}]
+                                      
+def test_yaml_data_plugin_load_from_file():
+    generator = ttr("./mock_data/yaml_data_1.yaml")
+    assert generator.data_loaded == [{'description': 'Customer A',
+                                      'dot1q': 100,
+                                      'interface': 'Gi1/1',
+                                      'ip': '10.0.0.1',
+                                      'mask': '255.255.255.0',
+                                      'vrf': 'cust_a'},
+                                     {'description': 'Customer B',
+                                      'dot1q': 200,
+                                      'interface': 'Gi1/2',
+                                      'ip': '10.0.2.1',
+                                      'mask': '255.255.255.0',
+                                      'vrf': 'cust_b'}]
+# test_yaml_data_plugin_load_from_file()

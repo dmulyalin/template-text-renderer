@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Data Loader Plugins &#8212; TTR 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Processors Plugins" href="Processors Plugins.html" />
+    <link rel="prev" title="TTR CLI tool" href="TTR CLI tool.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Processors Plugins.html" title="Processors Plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TTR CLI tool.html" title="TTR CLI tool"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-loader-plugins">
+<h1>Data Loader Plugins<a class="headerlink" href="#data-loader-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Data plugins responsible for loading data to render from various formats
+such as <code class="docutils literal notranslate"><span class="pre">YAML</span></code> structured text or <code class="docutils literal notranslate"><span class="pre">xlsx</span></code> spreadsheets.</p>
+<p>By default TTR uses file extension to choose plugin for loading data,
+alternatively TTR object <code class="docutils literal notranslate"><span class="pre">data_plugin</span></code> attribute can be used to
+specify default plugin to use.</p>
+<p>For instance, to load <code class="docutils literal notranslate"><span class="pre">data.csv</span></code> file TTR will use <code class="docutils literal notranslate"><span class="pre">csv</span></code> plugin, to load
+<code class="docutils literal notranslate"><span class="pre">data.yaml</span></code> file, <code class="docutils literal notranslate"><span class="pre">yaml</span></code> plugin will be used, etc.</p>
+<p>Data plugins load data in a list of dictionaries, where each item rendered using
+template as per <code class="docutils literal notranslate"><span class="pre">template_name_key</span></code> attribute.</p>
+<span class="target" id="module-ttr.plugins.data.xlsx_loader"></span><div class="section" id="xlsx-spreadsheets-loader-plugin">
+<h2>XLSX Spreadsheets loader plugin<a class="headerlink" href="#xlsx-spreadsheets-loader-plugin" title="Permalink to this headline">¶</a></h2>
+<p><strong>Plugin Name:</strong> <code class="docutils literal notranslate"><span class="pre">xlsx</span></code></p>
+<p>This plugin supports loading data from multiple sheets, combining them for rendering.</p>
+<p><strong>Prerequisites:</strong></p>
+<ul class="simple">
+<li><p>Requires <a class="reference external" href="https://pypi.org/project/openpyxl/">openpyxl</a> library</p></li>
+</ul>
+<p>Spreadsheets must contain a column or multiple columns with headers starting
+with <code class="docutils literal notranslate"><span class="pre">template_name_key</span></code> argument string. Values of template(s) columns either
+names of the template to use for rendering or OS path string to template file
+relative to <code class="docutils literal notranslate"><span class="pre">template_dir</span></code> argument supplied to TTR object on instantiation.</p>
+<p>In addition, table must contain column with <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> values, they used
+to combine results, i.e. rendering results for identical <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> combined
+in a single string. <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> used further by returners to return results.</p>
+<p>Spreadsheet might contain multiple tabs with names starting with <code class="docutils literal notranslate"><span class="pre">template</span></code>, these
+tabs can contain templates to use for rendering data from other tabs. All the templates
+loaded line by line, <code class="docutils literal notranslate"><span class="pre">template:{{</span> <span class="pre">template_name</span> <span class="pre">}}</span></code> lines used to identify end
+of previous and start of next template, where <code class="docutils literal notranslate"><span class="pre">template_name</span></code> used for referencing
+template in templates columns.</p>
+</div>
+<dl class="function">
+<dt id="ttr.plugins.data.xlsx_loader.load">
+<code class="descclassname">ttr.plugins.data.xlsx_loader.</code><code class="descname">load</code><span class="sig-paren">(</span><em>data</em>, <em>templates_dict</em>, <em>template_name_key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ttr.plugins.data.xlsx_loader.load" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Function to load XLSX spreadsheet. Takes OS path to <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> file</dt><dd><p>and returns list of dictionaries, where keys equal to headers
+of spreadsheets’ tabs.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – string, OS path to <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> file</p></li>
+<li><p><strong>templates_dict</strong> – dictionary to load templates from spreadsheet</p></li>
+<li><p><strong>template_name_key</strong> – string, templates column header prefix</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-ttr.plugins.data.csv_loader"></span><div class="section" id="csv-spreadsheets-loader-plugin">
+<h2>CSV Spreadsheets loader plugin<a class="headerlink" href="#csv-spreadsheets-loader-plugin" title="Permalink to this headline">¶</a></h2>
+<p><strong>Plugin Name:</strong> <code class="docutils literal notranslate"><span class="pre">csv</span></code></p>
+<p>Support loading data from CSV text file.</p>
+<p>Spreadsheet must contain a column or multiple columns with headers starting
+with <code class="docutils literal notranslate"><span class="pre">template_name_key</span></code> argument string. Values of template(s) columns either
+names of the template to use for rendering or OS path string to template file
+relative to <code class="docutils literal notranslate"><span class="pre">template_dir</span></code> argument supplied to TTR object on instantiation.</p>
+<p>In addition, table must contain column with <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> values, they used
+to combine results, i.e. rendering results for identical <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> combined
+in a single string. <code class="docutils literal notranslate"><span class="pre">result_name_key</span></code> used further by returners to return results.</p>
+</div>
+<dl class="function">
+<dt id="ttr.plugins.data.csv_loader.load">
+<code class="descclassname">ttr.plugins.data.csv_loader.</code><code class="descname">load</code><span class="sig-paren">(</span><em>data</em>, <em>templates_dict</em>, <em>template_name_key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ttr.plugins.data.csv_loader.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to load CSV spreadsheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – OS path to CSV text file</p></li>
+<li><p><strong>templates_dict</strong> – dictionary to load templates from spreadsheet, not supported by csv loader</p></li>
+<li><p><strong>template_name_key</strong> – string, templates column header prefix</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-ttr.plugins.data.yaml_loader"></span><div class="section" id="yaml-loader">
+<h2>YAML loader<a class="headerlink" href="#yaml-loader" title="Permalink to this headline">¶</a></h2>
+<p><strong>Plugin Name:</strong> <code class="docutils literal notranslate"><span class="pre">yaml</span></code></p>
+<p><strong>Prerequisites:</strong></p>
+<ul class="simple">
+<li><p>Requires PyYAML library</p></li>
+</ul>
+<p>Plugin to load data to render from YAML structured text.</p>
+</div>
+<dl class="function">
+<dt id="ttr.plugins.data.yaml_loader.load">
+<code class="descclassname">ttr.plugins.data.yaml_loader.</code><code class="descname">load</code><span class="sig-paren">(</span><em>data</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ttr.plugins.data.yaml_loader.load" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Function to load YAML data from text file or from string. Text file should have</dt><dd><p><code class="docutils literal notranslate"><span class="pre">.yml</span></code> or <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> extension to properly detect loader.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – string, OS path to text file or YAML structured text</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Loader Plugins</a><ul>
+<li><a class="reference internal" href="#xlsx-spreadsheets-loader-plugin">XLSX Spreadsheets loader plugin</a></li>
+<li><a class="reference internal" href="#csv-spreadsheets-loader-plugin">CSV Spreadsheets loader plugin</a></li>
+<li><a class="reference internal" href="#yaml-loader">YAML loader</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TTR CLI tool.html"
+                        title="previous chapter">TTR CLI tool</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Processors Plugins.html"
+                        title="next chapter">Processors Plugins</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Data Loader Plugins.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Processors Plugins.html" title="Processors Plugins"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TTR CLI tool.html" title="TTR CLI tool"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Denis Mulyalin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.0.
+    </div>
+  </body>
+</html>
