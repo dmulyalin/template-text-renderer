@@ -2,19 +2,15 @@
 Template Text Renderer - TTR
 ############################
 
-Pluggable framework to implement utilities around working with data and templates
-to produce text files.
-
-TTR targets to implement common work flow:
+Module to produce text files using templates. TTR targets to implement common work flow:
 
 .. image:: ./_images/workflow.png
 
-It is fairly simple but powerful enough to address various use cases
+Above approach is fairly simple but powerful enough to address various use cases
 where structured data need to be transformed in a textual form understandable by
-target system.
+targeted system.
 
-
-TTR uses plugins to load data, load templates, render and return results.
+TTR uses plugins to load data and templates, render and return results.
 
 .. image:: ./_images/Plugins_overview.png
 
