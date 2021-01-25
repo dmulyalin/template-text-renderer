@@ -27,9 +27,13 @@ template in templates columns.
 """
 
 import logging
-from openpyxl import load_workbook
 
 log = logging.getLogger(__name__)
+
+try:
+    from openpyxl import load_workbook
+except ImportError:
+    log.error("Failed to import openpyxl module")
 
 
 def load_template(sheet, templates_dict):
