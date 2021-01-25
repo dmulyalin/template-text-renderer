@@ -1,6 +1,6 @@
 # Template Text Renderer - TTR
 
-Module to produce text files using templates. Have a look in documentation for details.
+Module to produce text files using templates. Have a look in [documentation](https://template-text-renderer.readthedocs.io) for details.
 
 # Why?
 
