@@ -4,7 +4,7 @@ Base Template Loader
 
 Base loader loads templates from ``.txt`` files. 
 
-.. warning:: Only ``.txt`` files supported by this loader.
+.. warning:: Only ``.txt`` files supported by this loader unless ``template_name`` referring existing file.
 
 This loader searches for templates in this order:
 
@@ -13,7 +13,7 @@ This loader searches for templates in this order:
 2. If template name references file, load it
 3. Use ``templates_dir`` as a directory to search for template file.
 
-For cases 1 and 3 template name can omit extension, base loader will assume
+For cases 1 and 3 template name can omit extension, but base loader will assume
 ``.txt`` extension in that case. 
 
 On failure to load template file, base loader will log an error message and
@@ -48,6 +48,9 @@ def load(template_name, templates_dict, templates_dir):
     # check if template already loaded
     if template_name in templates_dict:
         return True
+    elif not template_name:
+        log.warning("TTR:base_template_loader - invalid template_name value: '{}'".format(template_name))
+        return False
     # check if template_name referring to template in TTR package
     elif template_name.startswith("ttr://"):
         template_filepath = template_name.replace("ttr://", "")
@@ -61,18 +64,20 @@ def load(template_name, templates_dict, templates_dir):
         template_filepath = template_name
     # assume that template_name is a path to text file within templates_dir
     else:
-        template_filepath = os.path.join(
-            templates_dir, template_name if template_name.endswith(".txt") else "{}.txt".format(
-                template_name
-            )
-        )
-        
+        # try to use template_name as is
+        template_filepath = os.path.join(templates_dir, template_name)
+        # check if path referring a file, if not, append .txt to template file name
+        if not os.path.isfile(template_filepath) and not template_name.endswith(".txt"):
+            template_filepath = os.path.join(
+                templates_dir, "{}.txt".format(template_name)
+            )            
+            
     # load template content from file
     if os.path.isfile(template_filepath):
         with open(template_filepath, "r") as f:
             templates_dict[template_name] = f.read()        
     else:
-        log.error("TTR:load_template template not found: {}; formed template_filepath: {}".format(template_name, template_filepath))
+        log.error("TTR:base_template_loader - Template not found: {}; formed template_filepath: {}".format(template_name, template_filepath))
         return False
 
     return True
