@@ -41,14 +41,12 @@
             
   <span class="target" id="module-ttr.ttr"></span><div class="section" id="template-text-renderer-ttr">
 <h1>Template Text Renderer - TTR<a class="headerlink" href="#template-text-renderer-ttr" title="Permalink to this headline">¶</a></h1>
-<p>Pluggable framework to implement utilities around working with data and templates
-to produce text files.</p>
-<p>TTR targets to implement common work flow:</p>
+<p>Module to produce text files using templates. TTR targets to implement common work flow:</p>
 <img alt="_images/workflow.png" src="_images/workflow.png" />
-<p>It is fairly simple but powerful enough to address various use cases
+<p>Above approach is fairly simple but powerful enough to address various use cases
 where structured data need to be transformed in a textual form understandable by
-target system.</p>
-<p>TTR uses plugins to load data, load templates, render and return results.</p>
+targeted system.</p>
+<p>TTR uses plugins to load data and templates, render and return results.</p>
 <img alt="_images/Plugins_overview.png" src="_images/Plugins_overview.png" />
 <p>In addition, TTR comes with a collection of Jinja2 templates to help with
 common use cases.</p>
@@ -59,7 +57,10 @@ common use cases.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Quick Start.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TTR CLI tool.html">TTR CLI tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TTR CLI tool.html">TTR CLI tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TTR CLI tool.html#how-to-use">How to use</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Data Loader Plugins.html">Data Loader Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Data Loader Plugins.html#xlsx-spreadsheets-loader-plugin">XLSX Spreadsheets loader plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Data Loader Plugins.html#csv-spreadsheets-loader-plugin">CSV Spreadsheets loader plugin</a></li>
@@ -111,7 +112,7 @@ to use to render that particular datum, default <code class="docutils literal no
 <li><p><strong>result_name_key</strong> – (str) name of the key in data items value of which should be
 used as a key in results dictionary, default <code class="docutils literal notranslate"><span class="pre">device</span></code></p></li>
 <li><p><strong>processors</strong> – (list) list of processor plugins names to pass loaded data
-through, default is empty list, no processors applied</p></li>
+through, default is empty list - no processors applied</p></li>
 <li><p><strong>templates_dict</strong> – (dict) dictionary of {template_name: template_content}</p></li>
 </ul>
 </dd>

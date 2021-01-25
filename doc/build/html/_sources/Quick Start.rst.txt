@@ -1,7 +1,7 @@
 Quick Start
 ###########
 
-TTR can be used as a module::
+TTR can be used as a module instantiating TTR object and supplying it with required attributes::
 
     import pprint
     from ttr import ttr
@@ -88,7 +88,7 @@ TTR can be used as a module::
     #          ' exit\n'
     #          '!'}
     
-It is possible to source templates and data from text files::
+It is also possible to source templates and data from text files::
 
     import pprint
     from ttr import ttr
@@ -125,7 +125,7 @@ It is possible to source templates and data from text files::
     #          ' exit\n'
     #          '!'}
     
-Data is the same as in previous example but stored in ``./data/data.yaml file``, TTR picks up ``YAML`` loader based on data file extension. Directory ``./Templates/`` contains ``interfaces.cisco_ios.txt`` template file.
+Data is the same as in previous example but stored in ``./data/data.yaml`` file, TTR picked up ``YAML`` loader based on data file extension. Directory ``./Templates/`` contains ``interfaces.cisco_ios.txt`` template file.
 
 Notice that rendering results also accessible using TTR object ``results`` property.
 

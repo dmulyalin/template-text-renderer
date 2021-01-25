@@ -45,7 +45,7 @@
             
   <div class="section" id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
-<p>TTR can be used as a module:</p>
+<p>TTR can be used as a module instantiating TTR object and supplying it with required attributes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">from</span> <span class="nn">ttr</span> <span class="k">import</span> <span class="n">ttr</span>
 
@@ -132,7 +132,7 @@
 <span class="c1">#          &#39;!&#39;}</span>
 </pre></div>
 </div>
-<p>It is possible to source templates and data from text files:</p>
+<p>It is also possible to source templates and data from text files:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">from</span> <span class="nn">ttr</span> <span class="k">import</span> <span class="n">ttr</span>
 
@@ -169,7 +169,7 @@
 <span class="c1">#          &#39;!&#39;}</span>
 </pre></div>
 </div>
-<p>Data is the same as in previous example but stored in <code class="docutils literal notranslate"><span class="pre">./data/data.yaml</span> <span class="pre">file</span></code>, TTR picks up <code class="docutils literal notranslate"><span class="pre">YAML</span></code> loader based on data file extension. Directory <code class="docutils literal notranslate"><span class="pre">./Templates/</span></code> contains <code class="docutils literal notranslate"><span class="pre">interfaces.cisco_ios.txt</span></code> template file.</p>
+<p>Data is the same as in previous example but stored in <code class="docutils literal notranslate"><span class="pre">./data/data.yaml</span></code> file, TTR picked up <code class="docutils literal notranslate"><span class="pre">YAML</span></code> loader based on data file extension. Directory <code class="docutils literal notranslate"><span class="pre">./Templates/</span></code> contains <code class="docutils literal notranslate"><span class="pre">interfaces.cisco_ios.txt</span></code> template file.</p>
 <p>Notice that rendering results also accessible using TTR object <code class="docutils literal notranslate"><span class="pre">results</span></code> property.</p>
 <p>TTR also can be invoked using context manager:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>

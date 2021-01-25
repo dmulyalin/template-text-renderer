@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Renderer Plugins" href="Renderer Plugins.html" />
-    <link rel="prev" title="Data Loader Plugins" href="Data Loader Plugins.html" /> 
+    <link rel="prev" title="Processors Plugins" href="Processors Plugins.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -32,7 +32,7 @@
           <a href="Renderer Plugins.html" title="Renderer Plugins"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Data Loader Plugins.html" title="Data Loader Plugins"
+          <a href="Processors Plugins.html" title="Processors Plugins"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
       </ul>
@@ -51,7 +51,7 @@
 <p>Base loader loads templates from <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Only <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files supported by this loader.</p>
+<p>Only <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files supported by this loader unless <code class="docutils literal notranslate"><span class="pre">template_name</span></code> referring existing file.</p>
 </div>
 <p>This loader searches for templates in this order:</p>
 <ol class="arabic simple" start="0">
@@ -60,7 +60,7 @@
 <li><p>If template name references file, load it</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">templates_dir</span></code> as a directory to search for template file.</p></li>
 </ol>
-<p>For cases 1 and 3 template name can omit extension, base loader will assume
+<p>For cases 1 and 3 template name can omit extension, but base loader will assume
 <code class="docutils literal notranslate"><span class="pre">.txt</span></code> extension in that case.</p>
 <p>On failure to load template file, base loader will log an error message and
 TTR continue processing of other data items.</p>
@@ -102,8 +102,8 @@ returns <code class="docutils literal notranslate"><span class="pre">False</span
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="Data Loader Plugins.html"
-                        title="previous chapter">Data Loader Plugins</a></p>
+  <p class="topless"><a href="Processors Plugins.html"
+                        title="previous chapter">Processors Plugins</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="Renderer Plugins.html"
                         title="next chapter">Renderer Plugins</a></p>
@@ -141,7 +141,7 @@ returns <code class="docutils literal notranslate"><span class="pre">False</span
           <a href="Renderer Plugins.html" title="Renderer Plugins"
              >next</a> |</li>
         <li class="right" >
-          <a href="Data Loader Plugins.html" title="Data Loader Plugins"
+          <a href="Processors Plugins.html" title="Processors Plugins"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">TTR 0.1.0 documentation</a> &#187;</li> 
       </ul>

@@ -1,6 +1,6 @@
 # Template Text Renderer - TTR
 
-Module to produce text files using templates.
+Module to produce text files using templates. Have a look in documentation for details.
 
 # Why?
 
@@ -26,3 +26,7 @@ numerous use cases.
 One of such use-cases might be network devices configuration generation - take inventory 
 (XLSX or CSV spreadsheets or YAML or you name it), combine it with templates and find 
 hundreds of lines of configuration generated in a matter of seconds. Profit...
+
+# Contribution
+
+Feel free to submit an issue, report a bug or ask a question, feature requests are welcomed. Or [buy](https://paypal.me/dmulyalin) Author a coffee
