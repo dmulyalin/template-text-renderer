@@ -29,4 +29,4 @@ hundreds of lines of configuration generated in a matter of seconds. Profit...
 
 # Contribution
 
-Feel free to submit an issue, report a bug or ask a question, feature requests are welcomed. Or [buy](https://paypal.me/dmulyalin) Author a coffee
+Feel free to submit an issue, report a bug or ask a question, feature requests are welcomed or [buy](https://paypal.me/dmulyalin) Author a coffee

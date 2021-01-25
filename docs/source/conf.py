@@ -11,8 +11,12 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import sys
-sys.path.insert(0, "../../ttr/")
+
+on_rtd = os.environ.get('READTHEDOCS') == 'True'
+
+if not on_rtd:
+    import sys
+    sys.path.insert(0, "../../ttr/")
 
 
 # -- Project information -----------------------------------------------------
@@ -53,7 +57,7 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
+
 if not on_rtd:
     html_theme = 'classic'
 else:
