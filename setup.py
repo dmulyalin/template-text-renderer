@@ -7,17 +7,20 @@ __author__ = "Denis Mulyalin <d.mulyalin@gmail.com>"
 
 setup(
     name="py-ttr",
-    version="0.1.0",
+    version="0.1.1",
     author="Denis Mulyalin",
     author_email="d.mulyalin@gmail.com",
-    description="Extendable Bulk Configuration Generator",
+    description="Template Text Renderer",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="http://github.com/dmulyalin/ttr",
     packages=find_packages(),
     package_data={
         "ttr": [
-            "templates/*"
+            "templates/*.txt",
+            "templates/*/*.txt",
+            "templates/*/*/*.txt",
+            "templates/*/*/*/*.txt"
         ]
     },
     include_package_data=True,

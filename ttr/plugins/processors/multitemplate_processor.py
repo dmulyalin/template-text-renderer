@@ -48,15 +48,14 @@ Returns::
 
 Where ``template_name_key`` is ``template``.
 
-Multitemplate processor detects on endings, ``:a`` and ``:b``
-for instance and uses them to split dictionaries in several dictionaries,
-populated with values corresponding to certain suffixes.
+Multitemplate processor detects suffixes/endings, ``:a`` and ``:b``
+in this case, and uses them to split dictionaries apart,
+populating them with values corresponding to certain suffixes.
 
-Key names without suffixes considered as common values and included in
-all dictionaries produced.
+Key names without suffixes considered as common values and shared across
+all dictionaries.
 """
 import logging
-import pprint
 
 log = logging.getLogger(__name__)
 

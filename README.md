@@ -20,12 +20,11 @@ Where each step accompanied with a set of plugins to fulfill in the moment requi
 
 # What?
 
-This module is very general in terms of supported data and templates, providing space for 
-numerous use cases. 
+TTR is very general in terms of supported data and templates, providing space for numerous use cases. 
 
 One of such use-cases might be network devices configuration generation - take inventory 
-(XLSX or CSV spreadsheets or YAML or you name it), combine it with templates and find 
-hundreds of lines of configuration generated in a matter of seconds. Profit...
+(XLSX LLD or CSV spreadsheets or YAML or you name it), combine it with templates and find 
+hundreds of lines of configuration generated in a matter of seconds.
 
 # Contribution
 

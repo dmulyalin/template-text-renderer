@@ -14,8 +14,16 @@ TTR uses plugins to load data and templates, render and return results.
 
 .. image:: ./_images/Plugins_overview.png
 
-In addition, TTR comes with a collection of Jinja2 templates to help with
-common use cases.
+Where:
+
+- data plugins - load data from various format and transform it in a list of dictionaries
+- processor plugins - optional step, but can be used to pre-process data before rendering
+- template loaders - retrieve template context from various sources
+- renderes - iterate over list of dictionaries data and render each item with template
+- returners - return rendering results to various destinations, e.g. save to file system
+
+In addition, TTR comes with a collection of Jinja2 templates to help with common use cases,
+such as generating configuration for network devices interfaces or BGP peers.
 """
 __version__ = "0.1.0"
 

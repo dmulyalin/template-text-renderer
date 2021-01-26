@@ -2,6 +2,8 @@
 Base Template Loader
 ********************
 
+**Refernece nameL** ``base``
+
 Base loader loads templates from ``.txt`` files. 
 
 .. warning:: Only ``.txt`` files supported by this loader unless ``template_name`` referring existing file.

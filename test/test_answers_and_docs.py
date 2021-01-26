@@ -141,3 +141,81 @@ def test_quick_start_from_files_context_manager():
                                ' ip address 10.0.2.1 255.255.255.0\n'
                                ' exit\n'
                                '!'}
+                               
+def test_xlsx_data_loader_example():
+    gen = ttr("./mock_data/table_data_loader_docs_example.xlsx")
+    assert gen.data_loaded == [{'device': 'rt1',
+                                'interface': 'Gi1/1.100',
+                                'ip': '10.0.0.1',
+                                'mask': 24,
+                                'template': 'ttr://simple/interface.cisco_ios.txt',
+                                'vid': 100,
+                                'vrf': 'MGMT'},
+                               {'device': 'rt1',
+                                'interface': 'Gi2/3',
+                                'ip': '10.3.0.1',
+                                'mask': 30,
+                                'template': 'ttr://simple/interface.cisco_ios.txt',
+                                'vid': None,
+                                'vrf': 'CUST'},
+                               {'device': 'sw23',
+                                'interface': 'Vlan21',
+                                'ip': '10.0.0.2',
+                                'mask': 24,
+                                'template': 'ttr://simple/interface.cisco_ios.txt',
+                                'vid': None,
+                                'vrf': 'MGMT'}]
+    results = gen.run()
+    assert results == {'rt1': 'interface Gi1/1.100\n'
+                              ' encapsulation dot1q 100\n'
+                              ' vrf forwarding  MGMT\n'
+                              ' ip address 10.0.0.1 24\n'
+                              ' exit\n'
+                              '!\n'
+                              'interface Gi2/3\n'
+                              ' encapsulation dot1q None\n'
+                              ' vrf forwarding  CUST\n'
+                              ' ip address 10.3.0.1 30\n'
+                              ' exit\n'
+                              '!',
+                       'sw23': 'interface Vlan21\n'
+                               ' encapsulation dot1q None\n'
+                               ' vrf forwarding  MGMT\n'
+                               ' ip address 10.0.0.2 24\n'
+                               ' exit\n'
+                               '!'}
+         
+# test_xlsx_data_loader_example()
+
+def test_xlsx_data_loader_example_multitemplate():
+    gen = ttr("./mock_data/table_data_loader_docs_example_multitemplate.xlsx", processors=["multitemplate"])
+    # pprint.pprint(gen.data_loaded)
+    assert gen.data_loaded == [{'device': 'rt1',
+                                'interface': 'Gi1/1',
+                                'ip': '10.0.0.1',
+                                'mask': 30,
+                                'template': 'ttr://simple/interface.cisco_ios.txt'},
+                               {'device': 'rt2',
+                                'interface': 'Gi1',
+                                'ip': '10.0.0.2',
+                                'mask': 30,
+                                'template': 'ttr://simple/interface.cisco_nxos.txt'},
+                               {'device': 'rt3',
+                                'interface': 'Gi2/3',
+                                'ip': '10.3.0.1',
+                                'mask': 30,
+                                'template': 'ttr://simple/interface.cisco_ios.txt'},
+                               {'device': 'rt4',
+                                'interface': 'Gi3',
+                                'ip': '10.3.0.2',
+                                'mask': 30,
+                                'template': 'ttr://simple/interface.cisco_nxos.txt'}]
+    results = gen.run()
+    # pprint.pprint(results)
+    assert results == {'rt1': 'interface Gi1/1\n ip address 10.0.0.1 30\n exit\n!',
+                       'rt2': 'interface Gi1\n  ip address 10.0.0.2/30\n  exit\n!',
+                       'rt3': 'interface Gi2/3\n ip address 10.3.0.1 30\n exit\n!',
+                       'rt4': 'interface Gi3\n  ip address 10.3.0.2/30\n  exit\n!'}
+    
+# test_xlsx_data_loader_example_multitemplate()
+    

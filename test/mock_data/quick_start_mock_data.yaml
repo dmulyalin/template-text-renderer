@@ -4,7 +4,7 @@
   ip: 10.0.0.1
   mask: 255.255.255.0
   vrf: cust_a
-  template: ttr://interfaces.cisco_ios.txt
+  template: interfaces.cisco_ios.txt
   device: rt-1
 - interface: Gi1/2
   description: Customer C
@@ -12,7 +12,7 @@
   ip: 10.0.3.1
   mask: 255.255.255.0
   vrf: cust_c
-  template: ttr://interfaces.cisco_ios.txt
+  template: interfaces.cisco_ios.txt
   device: rt-1
 - interface: Gi1/2
   description: Customer B
@@ -20,5 +20,5 @@
   ip: 10.0.2.1
   mask: 255.255.255.0
   vrf: cust_b
-  template: ttr://interfaces.cisco_ios.txt
+  template: interfaces.cisco_ios.txt
   device: rt-2

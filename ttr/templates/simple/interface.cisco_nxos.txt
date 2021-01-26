@@ -14,5 +14,5 @@ interface {{ interface }}
 {% if ipv6 is defined and maskv6 is defined %}
   ipv6 address {{ ipv6 }}/{{ maskv6 }}
 {% endif %}
- exit
+  exit
 !

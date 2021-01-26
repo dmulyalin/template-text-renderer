@@ -1,4 +1,0 @@
-hostname r1
-!
-interface loopback0
-  ip address 1.1.1.1/32

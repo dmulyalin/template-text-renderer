@@ -16,7 +16,7 @@ Supported arguments::
 How to use
 **********
 
-In general case TTR CLI utility takes data file and templates location references and saves produced results in a subfolder within ./Output/ directory, where subfolder name has this format ./Output/<current time><data file name>/.
+In general case TTR CLI utility takes data file and templates location references and saves produced results in a subfolder within ``./Output/`` directory, where subfolder name has this format ``./Output/<current time><data file name>/``.
 
 Sample invocation::
 
@@ -27,7 +27,7 @@ user to select file to work with::
 
     ttr -d ./data/
     ====================
-    Files found in './mock_data/' directory
+    Files found in './data/' directory
     0: csv_data_1.csv
     1: data.yaml
     2: table_data_1.xlsx

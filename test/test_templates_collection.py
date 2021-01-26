@@ -13,7 +13,7 @@ def test_loading_template_from_collection():
   ip: 10.0.0.1
   mask: 255.255.255.0
   vrf: cust_a
-  template: ttr://interfaces.cisco_ios.txt
+  template: ttr://simple/interface.cisco_ios.txt
   device: rt-1
 - interface: Gi1/2
   description: Customer C
@@ -21,7 +21,7 @@ def test_loading_template_from_collection():
   ip: 10.0.3.1
   mask: 255.255.255.0
   vrf: cust_c
-  template: ttr://interfaces.cisco_ios.txt
+  template: ttr://simple/interface.cisco_ios.txt
   device: rt-1
 - interface: Gi1/2
   description: Customer B
@@ -29,7 +29,7 @@ def test_loading_template_from_collection():
   ip: 10.0.2.1
   mask: 255.255.255.0
   vrf: cust_b
-  template: ttr://interfaces.cisco_ios.txt
+  template: ttr://simple/interface.cisco_ios.txt
   device: rt-2
     """
     generator = ttr(data=data, data_plugin="yaml")
@@ -67,7 +67,7 @@ def test_loading_template_from_collection_no_txt_extension():
   ip: 10.0.0.1
   mask: 255.255.255.0
   vrf: cust_a
-  template: ttr://interfaces.cisco_ios
+  template: ttr://simple/interface.cisco_ios
   device: rt-1
 - interface: Gi1/2
   description: Customer B
@@ -75,7 +75,7 @@ def test_loading_template_from_collection_no_txt_extension():
   ip: 10.0.2.1
   mask: 255.255.255.0
   vrf: cust_b
-  template: ttr://interfaces.cisco_ios
+  template: ttr://simple/interface.cisco_ios
   device: rt-2
     """
     generator = ttr(data=data, data_plugin="yaml")

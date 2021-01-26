@@ -2,7 +2,7 @@
 XLSX Spreadsheets loader plugin
 *******************************
 
-**Plugin Name:** ``xlsx``
+**Plugin reference name:** ``xlsx``
 
 This plugin supports loading data from multiple sheets, combining them for rendering.
 
@@ -11,22 +11,153 @@ This plugin supports loading data from multiple sheets, combining them for rende
 - Requires `openpyxl <https://pypi.org/project/openpyxl/>`_ library
 
 Spreadsheets must contain a column or multiple columns with headers starting
-with ``template_name_key`` argument string. Values of template(s) columns either
-names of the template to use for rendering or OS path string to template file
-relative to ``template_dir`` argument supplied to TTR object on instantiation.
+with ``template_name_key`` argument string, default is ``template``. Values of 
+template(s) columns either names of the template to use for rendering or OS path 
+string to template file relative to ``template_dir`` argument supplied to TTR 
+object on instantiation.
 
-In addition, table must contain column with ``result_name_key`` values, they used
-to combine results, i.e. rendering results for identical ``result_name_key`` combined
-in a single string. ``result_name_key`` used further by returners to return results.
+In addition, table must contain column with ``result_name_key`` values, default is 
+``device``, they used to combine results, i.e. rendering results for identical 
+``result_name_key`` combined in a single string. ``result_name_key`` used further 
+by returners to return results.
 
-Spreadsheet might contain multiple tabs with names starting with ``template``, these
-tabs can contain templates to use for rendering data from other tabs. All the templates
-loaded line by line, ``template:{{ template_name }}`` lines used to identify end
-of previous and start of next template, where ``template_name`` used for referencing
-template in templates columns.
+Spreadsheet tabs with names starting with ``#`` are skipped, useful to comment out
+tabs that no need to render.
+
+Sample spreadsheet table that contains details for interfaces configuration:
+
++--------+-----------+-----+------+----------+------+--------------------------------------+
+| device | interface | vid | vrf  | ip       | mask | template                             |                            
++========+===========+=====+======+==========+======+======================================+
+| rt1    | Gi1/1.100 | 100 | MGMT | 10.0.0.1 | 24   | ttr://simple/interface.cisco_ios.txt |
++--------+-----------+-----+------+----------+------+--------------------------------------+
+| rt1    | Gi2/3     |     | CUST | 10.3.0.1 | 30   | ttr://simple/interface.cisco_ios.txt |
++--------+-----------+-----+------+----------+------+--------------------------------------+
+| sw23   | Vlan21    |     | MGMT | 10.0.0.2 | 24   | ttr://simple/interface.cisco_ios.txt |
++--------+-----------+-----+------+----------+------+--------------------------------------+
+
+where:
+
+- ``device`` column contains ``result_name_key`` values
+- ``template`` column contains ``template_name_key`` values
+- ``ttr://simple/interface.cisco_ios.txt``  - is a template included in TTR templates collection
+
+Above table loaded into this list of dictionaries::
+
+    [{'device': 'rt1',
+      'interface': 'Gi1/1.100',
+      'ip': '10.0.0.1',
+      'mask': 24,
+      'template': 'ttr://simple/interface.cisco_ios.txt',
+      'vid': 100,
+      'vrf': 'MGMT'},
+     {'device': 'rt1',
+      'interface': 'Gi2/3',
+      'ip': '10.3.0.1',
+      'mask': 30,
+      'template': 'ttr://simple/interface.cisco_ios.txt',
+      'vid': None,
+      'vrf': 'CUST'},
+     {'device': 'sw23',
+      'interface': 'Vlan21',
+      'ip': '10.0.0.2',
+      'mask': 24,
+      'template': 'ttr://simple/interface.cisco_ios.txt',
+      'vid': None,
+      'vrf': 'MGMT'}]
+
+Combined with ``ttr://simple/interface.cisco_ios.txt`` it will produce these results::
+
+    ttr -d /path_to_table.xlsx/ -p
+    
+    # ---------------------------------------------------------------------------
+    # rt1 rendering results
+    # ---------------------------------------------------------------------------
+    interface Gi1/1.100
+     encapsulation dot1q 100
+     vrf forwarding  MGMT
+     ip address 10.0.0.1 24
+     exit
+    !
+    interface Gi2/3
+     encapsulation dot1q None
+     vrf forwarding  CUST
+     ip address 10.3.0.1 30
+     exit
+    !
+    
+    # ---------------------------------------------------------------------------
+    # sw23 rendering results
+    # ---------------------------------------------------------------------------
+    interface Vlan21
+     encapsulation dot1q None
+     vrf forwarding  MGMT
+     ip address 10.0.0.2 24
+     exit
+    !
+    
+Multiple Templates suffix separation
+------------------------------------
+
+Using multitemplate processor it is possible to define multiple template columns 
+within same spreadsheet tab using suffixes. Columns with headers with same suffixes 
+considered part of same datum and combined together. Headers without suffixes shared 
+across all datums.
+
+For example, this table uses ``:a`` and ``:b`` suffixes to denote relationship with certain templates:
+
++----------+-------------+------------+------+----------+-------------+------------+--------------------------------------+---------------------------------------+
+| device:a | interface:a | ip:a       | mask | device:b | interface:b | ip:b       | template:a                           | template:b                            |                            
++==========+=============+============+======+==========+=============+============+======================================+=======================================+
+| rt1      | Gi1/1       | 10.0.0.1   | 30   | rt2      | Gi1         | 10.0.0.2   | ttr://simple/interface.cisco_ios.txt | ttr://simple/interface.cisco_nxos.txt |
++----------+-------------+------------+------+----------+-------------+------------+--------------------------------------+---------------------------------------+
+| rt3      | Gi2/3       | 10.3.0.1   | 30   | rt4      | Gi3         | 10.3.0.2   | ttr://simple/interface.cisco_ios.txt | ttr://simple/interface.cisco_nxos.txt |
++----------+-------------+------------+------+----------+-------------+------------+--------------------------------------+---------------------------------------+
+
+where:
+
+- ``device`` columns contains ``result_name_key`` values
+- ``template`` columns contains ``template_name_key`` values
+- ``ttr://simple/interface.cisco_ios.txt``  - is a template included in TTR templates collection
+- ``ttr://simple/interface.cisco_nxos.txt``  - is a template included in TTR templates collection
+
+Above table data, after passing through ``multitemplate`` processor loaded into this list of dictionaries::
+
+    import pprint
+    from ttr import ttr
+    
+    gen = ttr("./path/to/table.xlsx", processors=["multitemplate"])
+    
+    pprint.pprint(gen.data_loaded)
+    
+    # prints:
+    # [{'device': 'rt1',
+    #   'interface': 'Gi1/1',
+    #   'ip': '10.0.0.1',
+    #   'mask': 30,
+    #   'template': 'ttr://simple/interface.cisco_ios.txt'},
+    #  {'device': 'rt2',
+    #   'interface': 'Gi1',
+    #   'ip': '10.0.0.2',
+    #   'mask': 30,
+    #   'template': 'ttr://simple/interface.cisco_nxos.txt'},
+    #  {'device': 'rt3',
+    #   'interface': 'Gi2/3',
+    #   'ip': '10.3.0.1',
+    #   'mask': 30,
+    #   'template': 'ttr://simple/interface.cisco_ios.txt'},
+    #  {'device': 'rt4',
+    #   'interface': 'Gi3',
+    #   'ip': '10.3.0.2',
+    #   'mask': 30,
+    #   'template': 'ttr://simple/interface.cisco_nxos.txt'}]
+	
+That technique allows to simplify definition of "paired" configurations, e.g. device A
+and device B configs or forward and rollback configurations etc. 
 """
 
 import logging
+from ..templates import templates_loaders_plugins
 
 log = logging.getLogger(__name__)
 
@@ -34,27 +165,6 @@ try:
     from openpyxl import load_workbook
 except ImportError:
     log.error("Failed to import openpyxl module")
-
-
-def load_template(sheet, templates_dict):
-    log.debug("XLSX loader, loading templates tab - '{}'".format(sheet.title))
-    current_template_name = ""
-    current_template_lines = []
-    for item in sheet.iter_rows(min_row=1, max_col=1, values_only=True):
-        rowData = item[0]
-        if rowData != None:  # check if cell is empty and skip it if so
-            if rowData.upper().startswith("TEMPLATE:"):
-                if current_template_lines and current_template_name:
-                    templates_dict[current_template_name] = "\n".join(
-                        current_template_lines
-                    )
-                current_template_name = rowData.split(":")[1].strip()
-                current_template_lines = []
-            else:
-                current_template_lines.append(rowData)
-    # add last template
-    if current_template_lines and current_template_name:
-        templates_dict[current_template_name] = "\n".join(current_template_lines)
 
 
 def load_data_from_sheet(sheet, ret, template_name_key):
@@ -107,7 +217,7 @@ def load(data, templates_dict, template_name_key, **kwargs):
             log.debug("XLSX loader, skipping tab - '{}'".format(sheet_name))
             continue
         elif "TEMPLATE" in sheet_name.upper():
-            load_template(wb[sheet_name], templates_dict)
+            templates_loaders_plugins["xlsx"](wb[sheet_name], templates_dict)
         else:
             load_data_from_sheet(wb[sheet_name], ret, template_name_key)
     return ret
