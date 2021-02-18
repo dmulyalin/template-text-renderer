@@ -8,7 +8,9 @@ This plugin supports loading data from multiple sheets, combining them for rende
 
 **Prerequisites:**
 
-- Requires `openpyxl <https://pypi.org/project/openpyxl/>`_ library
+- Requires `openpyxl <https://pypi.org/project/openpyxl/>`_ >= 3.0.0 library 
+
+**Restrictions and guidelines**
 
 Spreadsheets must contain a column or multiple columns with headers starting
 with ``template_name_key`` argument string, default is ``template``. Values of 
@@ -23,6 +25,10 @@ by returners to return results.
 
 Spreadsheet tabs with names starting with ``#`` are skipped, useful to comment out
 tabs that no need to render.
+
+First row in the spreadsheet must contain headers, otherwise spreadsheet not loaded.
+
+.. note:: empty cells loaded with value of ``None``
 
 Sample spreadsheet table that contains details for interfaces configuration:
 
@@ -151,12 +157,14 @@ Above table data, after passing through ``multitemplate`` processor loaded into 
     #   'ip': '10.3.0.2',
     #   'mask': 30,
     #   'template': 'ttr://simple/interface.cisco_nxos.txt'}]
-	
+    
 That technique allows to simplify definition of "paired" configurations, e.g. device A
 and device B configs or forward and rollback configurations etc. 
 """
 
 import logging
+import traceback
+
 from ..templates import templates_loaders_plugins
 
 log = logging.getLogger(__name__)
@@ -168,11 +176,31 @@ except ImportError:
 
 
 def load_data_from_sheet(sheet, ret, template_name_key):
-    headers = [
-        sheet.cell(row=1, column=i).value for i in range(1, sheet.max_column + 1)
-        if not sheet.cell(row=1, column=i).value.startswith("#")
-    ]
-
+    try:
+        headers = []
+        for i in range(1, sheet.max_column + 1):
+            if sheet.cell(row=1, column=i).value == None:
+                headers.append(None)
+            else:
+                headers.append(sheet.cell(row=1, column=i).value)
+        # strip spaces if any
+        headers = [i.strip() if isinstance(i, str) else i for i in headers]
+        # check headers
+        if not any(headers):
+            log.warning(
+                "XLSX loader, sheet '{}' first row is empty, no headers, skipping it.".format(
+                    sheet.title   
+                )
+            )
+            return
+    except:
+        log.error(
+            "XLSX loader, sheet '{}', failed to load headers, skipping it, error: {}".format(
+                sheet.title, traceback.format_exc()
+            )
+        )
+        return 
+        
     has_templates_column = False
     for header in headers:
         if header.startswith(template_name_key):
@@ -190,6 +218,7 @@ def load_data_from_sheet(sheet, ret, template_name_key):
     # form data
     log.debug("XLSX loader, loading data - tab: '{}', headers: '{}'".format(sheet.title, headers))
     for row in sheet.iter_rows(min_row=2, values_only=True):
+        # from data item
         ret.append(
             dict(zip(headers, row))
         )

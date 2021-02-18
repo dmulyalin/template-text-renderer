@@ -6,6 +6,10 @@ Jinja2 Renderer Plugin
 
 - Requires `jinja2 <https://pypi.org/project/Jinja2/>`_ library
 
+.. warning:: data keys or table headers must be valid Python variable names for 
+   Jinja2 engine to work correctly, e.g. a variable name must start with a 
+   letter or the underscore character.
+
 This renderer uses Jinja2 templates to render data and produce
 text results.
 

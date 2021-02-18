@@ -24,6 +24,18 @@ Where:
 
 In addition, TTR comes with a collection of Jinja2 templates to help with common use cases,
 such as generating configuration for network devices interfaces or BGP peers.
+
+How it works
+============
+
+On the base level TTR takes list of dictionaries, renders each dictionary with template
+defined in ``template_name_key`` and saves rendered data in results dictionary keyed by 
+``result_name_key``. 
+
+Each dictionary item must contain ``template_name_key`` and ``result_name_key`` keys.
+
+Various plugins can be used to load data in a list of dictionaries with other plugins 
+helping to process it, render and save results.
 """
 __version__ = "0.1.0"
 
@@ -71,6 +83,7 @@ class ttr:
         returner_kwargs={},
         result_name_key="device",
         processors=[],
+        processors_kwargs={},
         templates_dict={}
     ):
         self.data_plugin = data_plugin
@@ -85,6 +98,7 @@ class ttr:
         self.result_name_key = result_name_key
         self.results = None
         self.processors = processors
+        self.processors_kwargs = processors_kwargs
         self.data_loaded = None
 
         # load data to render
@@ -129,12 +143,15 @@ class ttr:
         for processor_plugin in self.processors:
             log.debug("Running loaded data through processor: '{}'".format(processor_plugin))
             self.data_loaded = processors_plugins[processor_plugin](
-                self.data_loaded,
+                data=self.data_loaded,
                 data_plugin=self.data_plugin,
-                template_name_key=self.template_name_key
+                template_name_key=self.template_name_key,
+                result_name_key=self.result_name_key,
+                **self.processors_kwargs
             )
-
-        log.debug("Data '{}' loaded".format(str(data)[:40]))
+            
+        if log.isEnabledFor(logging.DEBUG):
+            log.debug("Data loaded:\n{}".format(self.data_loaded))
 
     def run(self):
         """

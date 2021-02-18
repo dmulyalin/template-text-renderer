@@ -12,6 +12,7 @@ Supported arguments::
     -o,  --output        Output folder location, default ./Output/<current time><data file name>/
     -p,  --print         Print results to terminal instead of saving to folder
     -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
+    -f,  --filters       Comma separated list of glob patterns to use for filtering data to render
 
 How to use
 **********
@@ -39,7 +40,7 @@ import argparse
 import time
 import os
 import logging
-
+        
 log = logging.getLogger(__name__)
 
 
@@ -61,6 +62,7 @@ Template Text Renderer CLI utility
 -o,  --output        Output folder location, default ./Output/<current time><data file name>/
 -p,  --print         Print results to terminal instead of saving to folder
 -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
+-f,  --filters       Comma separated list of glob patterns to use for filtering data to render
 """
 
 def cli_tool():
@@ -115,7 +117,16 @@ def cli_tool():
         "--logging",
         action="store",
         dest="LOGGING_LEVEL",
-        default='WARNING',
+        default='ERROR',
+        type=str,
+        help=argparse.SUPPRESS,
+    )
+    run_options.add_argument(
+        "-f",
+        "--filters",
+        action="store",
+        dest="FILTERS",
+        default="",
         type=str,
         help=argparse.SUPPRESS,
     )
@@ -130,7 +141,8 @@ def cli_tool():
     OUTPUT_FOLDER = args.OUTPUT_FOLDER  # output filename
     PRINT_TO_TERMINAL = args.PRINT_TO_TERMINAL
     LOGGING_LEVEL = args.LOGGING_LEVEL
-
+    FILTERS = args.FILTERS
+    
     # set logging level
     try:
         logging.basicConfig(
@@ -186,7 +198,10 @@ def cli_tool():
             returner_kwargs={
                 "result_dir": OUTPUT_FOLDER
             },
-            processors = ["multitemplate"]
+            processors=["filtering", "multitemplate", "templates_split"],
+            processors_kwargs={
+                "filters": [i.strip() for i in FILTERS.split(",")]
+            }
     ) as g:
         g.run()
 

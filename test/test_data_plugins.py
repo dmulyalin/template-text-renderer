@@ -217,3 +217,75 @@ def test_yaml_data_plugin_load_from_file():
                                       'mask': '255.255.255.0',
                                       'vrf': 'cust_b'}]
 # test_yaml_data_plugin_load_from_file()
+
+def test_openpyxl_data_plugin_with_templates_split_processor():
+    generator = ttr("./mock_data/table_inline_templates_data_templates_split_test.xlsx", processors=["templates_split"])
+    # pprint.pprint(generator.data_loaded)
+    assert generator.data_loaded == [{'device': 'r1',
+                                      'hostname': 'r1',
+                                      'lo0_ip': '1.1.1.1',
+                                      'template': 'test_path/device_base'},
+                                      {'device': 'r1',
+                                      'hostname': 'r1',
+                                      'lo0_ip': '1.1.1.1',
+                                      'template': 'bgp_base'},
+                                      {'device': 'r1',
+                                      'hostname': 'r1',
+                                      'lo0_ip': '1.1.1.1',
+                                      'template': 'ospf_base'},
+                                      {'device': 'r2',
+                                      'hostname': 'r2',
+                                      'lo0_ip': '2.2.2.2',
+                                      'template': 'test_path/device_base'},
+                                      {'device': 'r2',
+                                      'hostname': 'r2',
+                                      'lo0_ip': '2.2.2.2',
+                                      'template': 'ospf_base'}]
+    generator.run()
+    # pprint.pprint(generator.results)  
+    assert generator.results == {'r1': 'hostname r1\n'
+                                       '!\n'
+                                       'interface loopback0\n'
+                                       '  ip address 1.1.1.1 255.255.255.255\n'
+                                       'router bgp 65500\n'
+                                       ' log neighbor changes\n'
+                                       ' router-id 1.1.1.1\n'
+                                       '!\n'
+                                       'router ospf 1\n'
+                                       ' area 0 password 123456\n'
+                                       ' router-id 1.1.1.1\n'
+                                       '!',
+                                   'r2': 'hostname r2\n'
+                                       '!\n'
+                                       'interface loopback0\n'
+                                       '  ip address 2.2.2.2 255.255.255.255\n'
+                                       'router ospf 1\n'
+                                       ' area 0 password 123456\n'
+                                       ' router-id 2.2.2.2\n'
+                                       '!'}    
+									   
+# test_openpyxl_data_plugin_with_templates_split_processor()
+
+def test_openpyxl_data_plugin_with_templates_filtering_processor():
+    generator = ttr(
+        "./mock_data/table_inline_templates_data_filtering_test.xlsx", 
+        processors=["filtering"],
+        processors_kwargs={
+            "filters": ["core1", "r[12]"]
+        }
+    )
+    # pprint.pprint(generator.data_loaded)
+    assert generator.data_loaded == [{'device': 'r1',
+                                      'hostname': 'r1',
+                                      'lo0_ip': '1.1.1.1',
+                                      'template': 'test_path/device_base'},
+                                     {'device': 'r2',
+                                      'hostname': 'r2',
+                                      'lo0_ip': '2.2.2.2',
+                                      'template': 'test_path/device_base'},
+                                     {'device': 'core1',
+                                      'hostname': 'core1',
+                                      'lo0_ip': '1.1.1.11',
+                                      'template': 'test_path/device_base'}]
+
+# test_openpyxl_data_plugin_with_templates_filtering_processor()
