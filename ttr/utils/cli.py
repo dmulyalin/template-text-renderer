@@ -14,9 +14,6 @@ Supported arguments::
     -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
     -f,  --filters       Comma separated list of glob patterns to use for filtering data to render
 
-How to use
-**********
-
 In general case TTR CLI utility takes data file and templates location references and saves produced results in a subfolder within ``./Output/`` directory, where subfolder name has this format ``./Output/<current time><data file name>/``.
 
 Sample invocation::

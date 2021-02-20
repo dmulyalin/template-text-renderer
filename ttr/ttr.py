@@ -30,12 +30,18 @@ How it works
 
 On the base level TTR takes list of dictionaries, renders each dictionary with template
 defined in ``template_name_key`` and saves rendered data in results dictionary keyed by 
-``result_name_key``. 
-
-Each dictionary item must contain ``template_name_key`` and ``result_name_key`` keys.
+``result_name_key``. Because of that each dictionary item must contain ``template_name_key`` 
+and ``result_name_key`` keys.
 
 Various plugins can be used to load data in a list of dictionaries with other plugins 
 helping to process it, render and save results.
+
+TTR API reference
+=================
+
+.. autoclass:: ttr.ttr
+  :noindex:
+  :members:
 """
 __version__ = "0.1.0"
 

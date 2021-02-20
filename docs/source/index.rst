@@ -1,11 +1,10 @@
-.. automodule:: ttr.ttr
-  
 Table of Content
 ****************
 
 .. toctree::
    :maxdepth: 4
    
+   Overview
    Installation
    Quick Start
    TTR CLI tool
@@ -14,11 +13,6 @@ Table of Content
    Templates Loader Plugins
    Renderer Plugins
    Returner Plugins
+   Examples
    Templates Collection/index
-   
-API Reference
-*************
-
-.. autoclass:: ttr.ttr
-  :noindex:
-  :members:
+  
