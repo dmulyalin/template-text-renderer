@@ -51,7 +51,15 @@ def process(data, result_name_key, filters=[], **kwargs):
     # iterate over data and filter it
     while data:
         item = data.pop(0)
+        # run sanity checks
+        if not isinstance(item.get(result_name_key, None), str):
+            log.warning("TTR:filtering processor - result_name_key '{}' invalid value: {}".format(
+                    result_name_key, item
+                )
+            )
+            continue
         for pattern in filters:
+            # run filtering
             if fnmatchcase(item[result_name_key], str(pattern)):
                 ret.append(item)
                 break

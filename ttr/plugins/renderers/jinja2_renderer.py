@@ -60,7 +60,7 @@ log = logging.getLogger(__name__)
 def render(
         data, 
         template_name_key,
-        templates_dir, 
+        templates, 
         templates_dict, 
         result_name_key,
         **renderer_kwargs
@@ -91,7 +91,7 @@ def render(
         template_name = datum[template_name_key]
         
         # get template content
-        if templates_loaders_plugins["base"](template_name, templates_dict, templates_dir):
+        if templates_loaders_plugins["base"](template_name, templates_dict, templates):
             template_content = templates_dict[template_name]
         else:
             log.error(

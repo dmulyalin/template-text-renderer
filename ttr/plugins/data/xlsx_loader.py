@@ -246,7 +246,7 @@ def load(data, templates_dict, template_name_key, **kwargs):
             log.debug("XLSX loader, skipping tab - '{}'".format(sheet_name))
             continue
         elif "TEMPLATE" in sheet_name.upper():
-            templates_loaders_plugins["xlsx"](wb[sheet_name], templates_dict)
+            templates_loaders_plugins["xlsx"](templates_dict, sheet=wb[sheet_name])
         else:
             load_data_from_sheet(wb[sheet_name], ret, template_name_key)
     return ret

@@ -8,7 +8,7 @@ print results to screen or save them in output folder.
 Supported arguments::
 
     -d,  --data          OS path to folder with data files or to data file, default ./Data/
-    -t,  --templates     OS path to folder with templates, default ./Templates/
+    -t,  --templates     OS path to folder or file with templates, default ./Templates/
     -o,  --output        Output folder location, default ./Output/<current time><data file name>/
     -p,  --print         Print results to terminal instead of saving to folder
     -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
@@ -22,6 +22,8 @@ In general case TTR CLI utility takes data file and templates location reference
 Sample invocation::
 
     ttr -d ./data/data.yaml
+    ttr -d ./data/data.yaml -t ./templates_folder/
+    ttr -d ./data/data.yaml -t ./templates/templates_spreadsheet_file.xlsx
 
 Alternatively a path to directory can be provided instead of data file, in that case TTR will scan that path and prompt
 user to select file to work with::
@@ -58,7 +60,7 @@ cli_help = """
 Template Text Renderer CLI utility
 
 -d,  --data          OS path to folder with data files or to data file, default ./Data/
--t,  --templates     OS path to folder with templates, default ./Templates/
+-t,  --templates     OS path to folder or file with templates, default ./Templates/
 -o,  --output        Output folder location, default ./Output/<current time><data file name>/
 -p,  --print         Print results to terminal instead of saving to folder
 -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
@@ -90,7 +92,7 @@ def cli_tool():
         "-t",
         "--templates",
         action="store",
-        dest="TEMPLATES_FOLDER",
+        dest="TEMPLATES_LOCATION",
         default="./Templates/",
         type=str,
         help=argparse.SUPPRESS,
@@ -137,7 +139,7 @@ def cli_tool():
 
     # general arguments
     DATA = args.DATA  # string, OS path to data file or folder with files to process
-    TEMPLATES_FOLDER = args.TEMPLATES_FOLDER  # OS path to folder to save results into
+    TEMPLATES_LOCATION = args.TEMPLATES_LOCATION  # OS path to folder to save results into
     OUTPUT_FOLDER = args.OUTPUT_FOLDER  # output filename
     PRINT_TO_TERMINAL = args.PRINT_TO_TERMINAL
     LOGGING_LEVEL = args.LOGGING_LEVEL
@@ -193,12 +195,12 @@ def cli_tool():
     # generate results and save them in output folder or print to screen
     with ttr(
             data=data_file_path,
-            templates_dir=TEMPLATES_FOLDER,
+            templates=TEMPLATES_LOCATION,
             returner="terminal" if PRINT_TO_TERMINAL else "file",
             returner_kwargs={
                 "result_dir": OUTPUT_FOLDER
             },
-            processors=["filtering", "multitemplate", "templates_split"],
+            processors=["multitemplate", "filtering", "templates_split"],
             processors_kwargs={
                 "filters": [i.strip() for i in FILTERS.split(",")]
             }

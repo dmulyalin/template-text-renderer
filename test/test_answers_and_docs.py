@@ -53,7 +53,6 @@ interface {{ interface }}
   template: interfaces.cisco_ios.txt
   device: rt-2
 """
-
     gen = ttr(data=data, data_plugin="yaml", templates_dict=templates)
     results = gen.run()    
     # pprint.pprint(results)
@@ -87,7 +86,7 @@ interface {{ interface }}
 def test_quick_start_from_files():
     gen = ttr(
         data="./mock_data/quick_start_mock_data.yaml", 
-        templates_dir="./Templates/"
+        templates="./Templates/"
     )
     gen.run()
     results = gen.results

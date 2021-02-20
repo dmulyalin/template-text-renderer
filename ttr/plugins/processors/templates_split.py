@@ -70,6 +70,10 @@ def process(data, template_name_key, split_char=";", **kwargs):
     # iterate over data and split templates
     while data:
         item = data.pop(0)
+        # run sanity check
+        if not isinstance(item.get(template_name_key, None), str):
+            continue
+        # do templates split if any
         if split_char in item[template_name_key]:
             templates = [i.strip() for i in item.pop(template_name_key).split(split_char)]
             for t_name in templates:

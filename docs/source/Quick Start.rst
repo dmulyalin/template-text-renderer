@@ -95,7 +95,7 @@ It is also possible to source templates and data from text files::
     
     gen = ttr(
         data="./data/data.yaml", 
-        templates_dir="./Templates/"
+        templates="./Templates/"
     )
     
     gen.run()
