@@ -58,7 +58,13 @@ def load(template_name, templates_dict, templates, **kwargs):
         return dir_template_loader.load(template_name, templates_dict, templates)
     # check if templates reference to xlsx file
     elif os.path.isfile(templates) and templates.endswith(".xlsx"):
-        return xlsx_template_loader.load(templates_dict=templates_dict, templates=templates)
+        is_loaded = xlsx_template_loader.load(templates_dict=templates_dict, templates=templates)
+        log.debug("TTR:base_template_loader, loaded templates from '{}', result {}".format(templates, is_loaded))
+        # check if template with requested name actually loaded
+        if template_name in templates_dict:
+            return True
+        else:
+            return False
 
     log.error("TTR:base_template_loader - failed to load template: {}; make sure it is either".format(template_name))
     return False

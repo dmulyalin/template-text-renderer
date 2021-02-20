@@ -95,10 +95,10 @@ def render(
             template_content = templates_dict[template_name]
         else:
             log.error(
-                "TTR:Jinja2 renderer failed to load template file: '{}'".format(
-                    template_name
+                "TTR:Jinja2 renderer failed to load template file: '{}' from '{}'".format(
+                    template_name, templates
                 )
-            )    
+            )        
             continue
 
         # create Jinja2 template object
