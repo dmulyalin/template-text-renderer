@@ -43,8 +43,6 @@ TTR API reference
   :noindex:
   :members:
 """
-__version__ = "0.1.0"
-
 import logging
 import os
 from .plugins.data import data_plugins

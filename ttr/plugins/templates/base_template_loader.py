@@ -65,6 +65,9 @@ def load(template_name, templates_dict, templates, **kwargs):
             return True
         else:
             return False
-
-    log.error("TTR:base_template_loader - failed to load template: {}; make sure it is either".format(template_name))
+    # check if templates reference to txt file
+    elif os.path.isfile(templates) and templates.endswith(".txt"):
+        return file_template_loader.load(template_name, templates_dict, filepath=templates)        
+        
+    log.error("TTR:base_template_loader - failed to load template: {}; templates parameter should be path to folder or xlsx spreadsheet with templates".format(template_name))
     return False

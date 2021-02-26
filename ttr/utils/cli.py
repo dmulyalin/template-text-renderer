@@ -2,18 +2,24 @@
 TTR CLI tool
 ############
 
+TTR CLI is an example of tool built using TTR library.
+
 This tool can be used to render data from various sources and either
 print results to screen or save them in output folder.
 
 Supported arguments::
 
     -d,  --data          OS path to folder with data files or to data file, default ./Data/
-    -t,  --templates     OS path to folder or file with templates, default ./Templates/
+    -t,  --templates     OS path to folder, .txt or .xlsx file with template(s), default ./Templates/
     -o,  --output        Output folder location, default ./Output/<current time><data file name>/
     -p,  --print         Print results to terminal instead of saving to folder
     -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
     -f,  --filters       Comma separated list of glob patterns to use for filtering data to render
 
+.. note:: ``--templates`` argument should be a path to folder with templates 
+    files within that folder/subfolders or path to ``.xlsx`` spreadsheet file with 
+    templates or path to ``.txt`` file with single template content.
+    
 In general case TTR CLI utility takes data file and templates location references and saves produced results in a subfolder within ``./Output/`` directory, where subfolder name has this format ``./Output/<current time><data file name>/``.
 
 Sample invocation::
@@ -50,7 +56,7 @@ if __name__ == "__main__":
 
 from ttr import ttr
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 ctime = time.strftime("%Y-%m-%d_%H-%M-%S")
 
 cli_help = """

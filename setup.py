@@ -7,7 +7,7 @@ __author__ = "Denis Mulyalin <d.mulyalin@gmail.com>"
 
 setup(
     name="py-ttr",
-    version="0.3.0",
+    version="0.3.1",
     author="Denis Mulyalin",
     author_email="d.mulyalin@gmail.com",
     description="Template Text Renderer",
@@ -30,6 +30,12 @@ setup(
         "Programming Language :: Python :: 3.6",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.6",
+    install_requires=[
+        "PyYAML>=5.3.1",
+        "openpyxl>=3.0.4",
+        "Jinja2>=2.11.2"
     ],
     entry_points = {
         'console_scripts': ['ttr=ttr:cli_tool'],
