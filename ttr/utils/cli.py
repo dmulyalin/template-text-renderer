@@ -63,7 +63,7 @@ cli_help = """
 Template Text Renderer CLI utility
 
 -d,  --data          OS path to folder with data files or to data file, default ./Data/
--t,  --templates     OS path to folder or file with templates, default ./Templates/
+-t,  --templates     OS path to folder, .txt or .xlsx file with template(s), default ./Templates/
 -o,  --output        Output folder location, default ./Output/<current time><data file name>/
 -p,  --print         Print results to terminal instead of saving to folder
 -l,  --logging       Set logging level - "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"; default ERROR
