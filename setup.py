@@ -7,7 +7,7 @@ __author__ = "Denis Mulyalin <d.mulyalin@gmail.com>"
 
 setup(
     name="py-ttr",
-    version="0.3.1",
+    version="0.3.2",
     author="Denis Mulyalin",
     author_email="d.mulyalin@gmail.com",
     description="Template Text Renderer",
