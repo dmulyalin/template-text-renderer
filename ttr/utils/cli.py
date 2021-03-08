@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
 from ttr import ttr
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 ctime = time.strftime("%Y-%m-%d_%H-%M-%S")
 
 cli_help = """
