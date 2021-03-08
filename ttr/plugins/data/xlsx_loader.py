@@ -13,14 +13,14 @@ This plugin supports loading data from multiple sheets, combining them for rende
 **Restrictions and guidelines**
 
 Spreadsheets must contain a column or multiple columns with headers starting
-with ``template_name_key`` argument string, default is ``template``. Values of 
-template(s) columns either names of the template to use for rendering or OS path 
-string to template file relative to ``template_dir`` argument supplied to TTR 
+with ``template_name_key`` argument string, default is ``template``. Values of
+template(s) columns either names of the template to use for rendering or OS path
+string to template file relative to ``template_dir`` argument supplied to TTR
 object on instantiation.
 
-In addition, table must contain column with ``result_name_key`` values, default is 
-``device``, they used to combine results, i.e. rendering results for identical 
-``result_name_key`` combined in a single string. ``result_name_key`` used further 
+In addition, table must contain column with ``result_name_key`` values, default is
+``device``, they used to combine results, i.e. rendering results for identical
+``result_name_key`` combined in a single string. ``result_name_key`` used further
 by returners to return results.
 
 Spreadsheet tabs with names starting with ``#`` are skipped, useful to comment out
@@ -33,7 +33,7 @@ First row in the spreadsheet must contain headers, otherwise spreadsheet not loa
 Sample spreadsheet table that contains details for interfaces configuration:
 
 +--------+-----------+-----+------+----------+------+--------------------------------------+
-| device | interface | vid | vrf  | ip       | mask | template                             |                            
+| device | interface | vid | vrf  | ip       | mask | template                             |
 +========+===========+=====+======+==========+======+======================================+
 | rt1    | Gi1/1.100 | 100 | MGMT | 10.0.0.1 | 24   | ttr://simple/interface.cisco_ios.txt |
 +--------+-----------+-----+------+----------+------+--------------------------------------+
@@ -75,7 +75,7 @@ Above table loaded into this list of dictionaries::
 Combined with ``ttr://simple/interface.cisco_ios.txt`` it will produce these results::
 
     ttr -d /path_to_table.xlsx/ -p
-    
+
     # ---------------------------------------------------------------------------
     # rt1 rendering results
     # ---------------------------------------------------------------------------
@@ -91,7 +91,7 @@ Combined with ``ttr://simple/interface.cisco_ios.txt`` it will produce these res
      ip address 10.3.0.1 30
      exit
     !
-    
+
     # ---------------------------------------------------------------------------
     # sw23 rendering results
     # ---------------------------------------------------------------------------
@@ -101,19 +101,19 @@ Combined with ``ttr://simple/interface.cisco_ios.txt`` it will produce these res
      ip address 10.0.0.2 24
      exit
     !
-    
+
 Multiple Templates suffix separation
 ------------------------------------
 
-Using multitemplate processor it is possible to define multiple template columns 
-within same spreadsheet tab using suffixes. Columns with headers with same suffixes 
-considered part of same datum and combined together. Headers without suffixes shared 
+Using multitemplate processor it is possible to define multiple template columns
+within same spreadsheet tab using suffixes. Columns with headers with same suffixes
+considered part of same datum and combined together. Headers without suffixes shared
 across all datums.
 
 For example, this table uses ``:a`` and ``:b`` suffixes to denote relationship with certain templates:
 
 +----------+-------------+------------+------+----------+-------------+------------+--------------------------------------+---------------------------------------+
-| device:a | interface:a | ip:a       | mask | device:b | interface:b | ip:b       | template:a                           | template:b                            |                            
+| device:a | interface:a | ip:a       | mask | device:b | interface:b | ip:b       | template:a                           | template:b                            |
 +==========+=============+============+======+==========+=============+============+======================================+=======================================+
 | rt1      | Gi1/1       | 10.0.0.1   | 30   | rt2      | Gi1         | 10.0.0.2   | ttr://simple/interface.cisco_ios.txt | ttr://simple/interface.cisco_nxos.txt |
 +----------+-------------+------------+------+----------+-------------+------------+--------------------------------------+---------------------------------------+
@@ -131,11 +131,11 @@ Above table data, after passing through ``multitemplate`` processor loaded into 
 
     import pprint
     from ttr import ttr
-    
+
     gen = ttr("./path/to/table.xlsx", processors=["multitemplate"])
-    
+
     pprint.pprint(gen.data_loaded)
-    
+
     # prints:
     # [{'device': 'rt1',
     #   'interface': 'Gi1/1',
@@ -157,9 +157,9 @@ Above table data, after passing through ``multitemplate`` processor loaded into 
     #   'ip': '10.3.0.2',
     #   'mask': 30,
     #   'template': 'ttr://simple/interface.cisco_nxos.txt'}]
-    
+
 That technique allows to simplify definition of "paired" configurations, e.g. device A
-and device B configs or forward and rollback configurations etc. 
+and device B configs or forward and rollback configurations etc.
 """
 
 import logging
@@ -189,7 +189,7 @@ def load_data_from_sheet(sheet, ret, template_name_key):
         if not any(headers):
             log.warning(
                 "XLSX loader, sheet '{}' first row is empty, no headers, skipping it.".format(
-                    sheet.title   
+                    sheet.title
                 )
             )
             return
@@ -199,13 +199,15 @@ def load_data_from_sheet(sheet, ret, template_name_key):
                 sheet.title, traceback.format_exc()
             )
         )
-        return 
-        
+        return
+
+    # check if headers have template column(s)
     has_templates_column = False
     for header in headers:
-        if header.startswith(template_name_key):
+        if isinstance(header, str) and header.startswith(template_name_key):
             has_templates_column = True
             break
+
 
     if not has_templates_column:
         log.warning(
