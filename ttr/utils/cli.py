@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     sys.path.insert(0, ".")
 
-__version__ = "0.3.3"
+__version__ = "0.4.0"
 ctime = time.strftime("%Y-%m-%d_%H-%M-%S")
 
 cli_help = """

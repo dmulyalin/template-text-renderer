@@ -5,7 +5,7 @@
 
 # Template Text Renderer - TTR
 
-Module to produce text files using templates. Have a look in [documentation](https://template-text-renderer.readthedocs.io) for details or install from [PyPi](https://pypi.org/project/py-ttr/0.1.0/).
+Module to produce text files using templates. Have a look in [documentation](https://template-text-renderer.readthedocs.io) for details or install from [PyPi](https://pypi.org/project/py-ttr/).
 
 # Why?
 

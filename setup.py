@@ -7,7 +7,7 @@ __author__ = "Denis Mulyalin <d.mulyalin@gmail.com>"
 
 setup(
     name="py-ttr",
-    version="0.3.3",
+    version="0.4.0",
     author="Denis Mulyalin",
     author_email="d.mulyalin@gmail.com",
     description="Template Text Renderer",
@@ -28,6 +28,7 @@ setup(
     classifiers=[
         "Topic :: Utilities",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
