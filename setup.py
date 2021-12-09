@@ -20,11 +20,11 @@ setup(
             "templates/*.txt",
             "templates/*/*.txt",
             "templates/*/*/*.txt",
-            "templates/*/*/*/*.txt"
+            "templates/*/*/*/*.txt",
         ]
     },
     include_package_data=True,
-    data_files=[('', ['LICENSE'])],
+    data_files=[("", ["LICENSE"])],
     classifiers=[
         "Topic :: Utilities",
         "Programming Language :: Python :: 3.6",
@@ -32,12 +32,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=[
-        "PyYAML>=5.3.1",
-        "openpyxl>=3.0.4",
-        "Jinja2>=2.11.2"
-    ],
-    entry_points = {
-        'console_scripts': ['ttr=ttr:cli_tool'],
-    }
+    install_requires=["PyYAML>=5.3.1", "openpyxl>=3.0.4", "Jinja2>=2.11.2"],
+    entry_points={"console_scripts": ["ttr=ttr:cli_tool"]},
 )

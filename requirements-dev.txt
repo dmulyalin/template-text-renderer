@@ -1,0 +1,6 @@
+pre-commit==2.*
+black
+flake8==4.*
+bandit==1.7.0
+pylint
+pyenchant

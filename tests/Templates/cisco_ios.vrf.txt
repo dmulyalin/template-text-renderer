@@ -1,0 +1,9 @@
+vrf {{ vrf_name }}
+ rd {{ vrf_rd }}
+ description {{ description }}
+ address-family ipv4 unicast
+   rt {{ vrf_rt }} both
+!
+interface {{ interface }}
+ vrf {{ vrf_name }}
+!

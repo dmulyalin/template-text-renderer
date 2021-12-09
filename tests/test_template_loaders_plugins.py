@@ -2,6 +2,8 @@ import sys
 sys.path.insert(0,'../')
 import pprint
 
+import pytest
+
 from ttr import ttr
 
 def test_ttr_load_template_method_load_content_inline():
@@ -53,6 +55,7 @@ interface {{ interface }}
   device: rt-2
 """
     gen = ttr(data=data, data_plugin="yaml")
+    print(id(gen))
     gen.load_templates(template_name="interfaces.cisco_ios.txt", template_content=template)
     results = gen.run()    
     # pprint.pprint(results)
@@ -80,7 +83,7 @@ interface {{ interface }}
                                ' ip address 10.0.2.1 255.255.255.0\n'
                                ' exit\n'
                                '!'}
-
+	
 # test_ttr_load_template_method_load_content_inline()
 
 def test_ttr_base_to_dir_templates_loader():
@@ -91,8 +94,10 @@ def test_ttr_base_to_dir_templates_loader():
     gen = ttr(
         data="./mock_data/quick_start_mock_data.yaml"
     )
+    print(id(gen))
+    print(gen.templates_dict)
     gen.load_templates(template_name="interfaces.cisco_ios.txt", templates="./Templates/")
-    # pprint.pprint(gen.templates_dict)
+    pprint.pprint(gen.templates_dict)
     assert gen.templates_dict == {'interfaces.cisco_ios.txt': 'interface {{ interface }}\n'
                                                               '{% if description is defined %}\n'
                                                               ' description {{ description }}\n'
@@ -113,7 +118,7 @@ def test_ttr_base_to_dir_templates_loader():
                                                               '!'}
     gen.run()
     results = gen.results
-    # pprint.pprint(results)
+    pprint.pprint(results)
     assert results == {'rt-1': 'interface Gi1/1\n'
                                ' description Customer A\n'
                                ' encapsulation dot1q 100\n'
@@ -135,15 +140,15 @@ def test_ttr_base_to_dir_templates_loader():
                                ' ip address 10.0.2.1 255.255.255.0\n'
                                ' exit\n'
                                '!'}
-                               
-# test_ttr_base_templates_loader()
+
+# test_ttr_base_to_dir_templates_loader()
 
 def test_ttr_dir_templates_loader():
     gen = ttr(
         data="./mock_data/quick_start_mock_data.yaml"
     )
     gen.load_templates(template_name="interfaces.cisco_ios.txt", templates="./Templates/", plugin="dir")
-    # pprint.pprint(gen.templates_dict)
+    pprint.pprint(gen.templates_dict)
     assert gen.templates_dict == {'interfaces.cisco_ios.txt': 'interface {{ interface }}\n'
                                                               '{% if description is defined %}\n'
                                                               ' description {{ description }}\n'

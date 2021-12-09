@@ -4,7 +4,7 @@ Multitemplate Processor
 
 **Plugin reference name:** ``multitemplate``
 
-Processor to extract multiple template dictionaries from each 
+Processor to extract multiple template dictionaries from each
 data item based on suffix values.
 
 Takes a list of dictionaries::
@@ -60,12 +60,13 @@ import logging
 log = logging.getLogger(__name__)
 
 
-def process(data, template_name_key, **kwargs):
+def process(data, template_name_key, **kwargs):  # pylint: disable=unused-argument
     """
     Function to process multitemplate data items.
-    
+
     :param data: (list), data to process - list of dictionaries
     :param template_name_key: string, name of the template key
+    :param kwargs: (dict) any additional arguments ignored
     """
     ret = []
     headers = tuple()
@@ -83,13 +84,19 @@ def process(data, template_name_key, **kwargs):
                 [
                     h.replace(template_name_key, "")
                     for h in headers
-                    if h.startswith(template_name_key) and h != template_name_key
+                    if (
+                        isinstance(h, str)
+                        and h.startswith(template_name_key)
+                        and h != template_name_key
+                    )
                 ]
             )
-            headers_without_endings = [h for h in headers if not h.endswith(endings)]
+            headers_without_endings = [
+                h for h in headers if (isinstance(h, str) and not h.endswith(endings))
+            ]
             headers_to_endings = {
                 ending: headers_without_endings
-                + [h for h in headers if h.endswith(ending)]
+                + [h for h in headers if (isinstance(h, str) and h.endswith(ending))]
                 for ending in endings
             }
             if template_name_key in headers_without_endings:

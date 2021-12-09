@@ -53,7 +53,7 @@ And this file with template at ``/path/to/templates_folder/interfaces.cisco_ios.
 Could be combined using TTR by running this command::
 
     ttr --data /path/to/data.yaml --template /path/to/templates_folder/ --print
-    
+
 Printing this output to terminal screen::
 
     # ---------------------------------------------------------------------------
@@ -73,7 +73,7 @@ Printing this output to terminal screen::
      ip address 10.0.3.1 255.255.255.0
      exit
     !
-    
+
     # ---------------------------------------------------------------------------
     # rt-2 rendering results
     # ---------------------------------------------------------------------------
@@ -85,15 +85,15 @@ Printing this output to terminal screen::
      exit
     !
 
-.. note:: ``--templates`` argument should be a path to folder with templates 
-    files within that folder/subfolders or path to ``.xlsx`` spreadsheet file with 
+.. note:: ``--templates`` argument should be a path to folder with templates
+    files within that folder/subfolders or path to ``.xlsx`` spreadsheet file with
     templates or path to ``.txt`` file with single template content.
 
 TTR can be used as a module instantiating TTR object and supplying it with required attributes::
 
     import pprint
     from ttr import ttr
-    
+
     templates = {
     "interfaces.cisco_ios.txt": """
     interface {{ interface }}
@@ -116,7 +116,7 @@ TTR can be used as a module instantiating TTR object and supplying it with requi
     !
     """
     }
-    
+
     data = """
     - interface: Gi1/1
       description: Customer A
@@ -143,14 +143,14 @@ TTR can be used as a module instantiating TTR object and supplying it with requi
       template: interfaces.cisco_ios.txt
       device: rt-2
     """
-    
+
     gen = ttr(data=data, data_plugin="yaml", templates_dict=templates)
     results = gen.run()
-    
+
     pprint.pprint(results)
-    
+
     # prints:
-    # 
+    #
     # {'rt-1': '\n'
     #          'interface Gi1/1\n'
     #          ' description Customer A\n'
@@ -175,22 +175,22 @@ TTR can be used as a module instantiating TTR object and supplying it with requi
     #          ' ip address 10.0.2.1 255.255.255.0\n'
     #          ' exit\n'
     #          '!'}
-    
+
 It is also possible to source templates and data from text files::
 
     import pprint
     from ttr import ttr
-    
+
     gen = ttr(
-        data="./data/data.yaml", 
+        data="./data/data.yaml",
         templates="./Templates/"
     )
-    
+
     gen.run()
     pprint.pprint(gen.results)
-    
+
     # prints:
-    # 
+    #
     # {'rt-1': 'interface Gi1/1\n'
     #          ' description Customer A\n'
     #          ' encapsulation dot1q 100\n'
@@ -212,7 +212,7 @@ It is also possible to source templates and data from text files::
     #          ' ip address 10.0.2.1 255.255.255.0\n'
     #          ' exit\n'
     #          '!'}
-    
+
 Data is the same as in previous example but stored in ``./data/data.yaml`` file, TTR picked up ``YAML`` loader based on data file extension. Directory ``./Templates/`` contains ``interfaces.cisco_ios.txt`` template file.
 
 Notice that rendering results also accessible using TTR object ``results`` property.
@@ -221,10 +221,10 @@ TTR also can be invoked using context manager::
 
     import pprint
     from ttr import ttr
-    
+
     with ttr("./data/data.yaml") as gen:
         results = gen.run()
-        
+
     pprint.pprint(gen.results)
-    
+
 Above example produces same results as before, ``templates_dir`` used with default value which is ``./Templates/``.

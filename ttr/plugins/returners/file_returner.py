@@ -34,33 +34,30 @@ For example, if results ``data_dict`` might look like this::
 If ``result_dir`` argument set to ``./Output/``, file returner
 will iterate over ``data_dict`` using keys as filenames
 populating files with values at the end ``./Output/`` directory
-will contain two files named ``rt-1.txt`` and ``rt-2.txt`` with 
-respective content.    
+will contain two files named ``rt-1.txt`` and ``rt-2.txt`` with
+respective content.
 """
 import logging
 import os
 
+log = logging.getLogger(__name__)
+
 
 def dump(
-        data_dict, 
-        result_dir="./Output/",
-        **kwargs
-    ):
+    data_dict, result_dir="./Output/", **kwargs
+):  # pylint: disable=unused-argument
     """
     Function to save results in text files.
-    
-    :param data_dict: (dict) dictionary keyed by ``result_name_key`` where 
+
+    :param data_dict: (dict) dictionary keyed by ``result_name_key`` where
                       values are strings to save in text files
     :param result_dir: (str) OS path to directory to save results in
+    :param kwargs: (dict) any additional arguments ignored
     """
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
-    
+
     for datum_name, filedata in data_dict.items():
-        filename = os.path.join(
-            result_dir, "{}.txt".format(
-                datum_name
-            )
-        )
+        filename = os.path.join(result_dir, "{}.txt".format(datum_name))
         with open(filename, "w", encoding="utf-8") as f:
             f.write(filedata)

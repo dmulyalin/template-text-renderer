@@ -1,0 +1,35 @@
+module interface {
+    yang-version "1.1";
+
+    namespace "http://ttr/test-1";
+    
+    prefix "ttr";
+  
+    leaf interface {
+        mandatory true;
+        type string;
+    }
+    leaf template {
+        mandatory true;
+        type string;
+    }
+    leaf device {
+        mandatory true;
+        type string;
+    }
+    leaf description{
+        type string;
+    }
+    leaf vid {
+        type int32;
+    }
+    leaf ip {
+        type string;
+    }
+    leaf mask {
+        type string;
+    }
+    leaf vrf {
+        type string;
+    }
+}

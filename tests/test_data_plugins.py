@@ -28,7 +28,7 @@ def test_openpyxl_data_plugin():
 
 def test_openpyxl_data_plugin_multitab_table():
     generator = ttr("./mock_data/table_multitab_data_2.xlsx")
-    # pprint.pprint(generator.data_loaded)
+    pprint.pprint(generator.data_loaded)
     assert generator.data_loaded == [{'device': 'r1',
                 'hostname': 'r1',
                 'lo0_ip': '1.1.1.1',
@@ -45,7 +45,9 @@ def test_openpyxl_data_plugin_multitab_table():
                 'interface': '10.0.1.1/24',
                 'ip': 'Eth2',
                 'template': 'test_path/interf_cfg'}]
+    print(generator.templates_dict)
     generator.run()
+    print(generator.results)
     assert generator.results == {'r1': 'hostname r1\n!\ninterface loopback0\n  ip address 1.1.1.1/32\ninterface 10.0.0.1/24\n  ip address Eth1/32\ninterface 10.0.1.1/24\n  ip address Eth2/32', 'r2': 'hostname r2\n!\ninterface loopback0\n  ip address 2.2.2.2/32'}
     
 # test_openpyxl_data_plugin_multitab_table()
@@ -92,7 +94,7 @@ def test_openpyxl_data_plugin_templates_in_table():
                                       'interface loopback0\n'
                                       '  ip address 2.2.2.2 255.255.255.255'}
     
-test_openpyxl_data_plugin_templates_in_table()
+# test_openpyxl_data_plugin_templates_in_table()
 
 def test_openpyxl_data_plugin_with_multitemplate_processor():
     generator = ttr("./mock_data/table_multiple_templates.xlsx", processors=["multitemplate"])
@@ -263,7 +265,7 @@ def test_openpyxl_data_plugin_with_templates_split_processor():
                                        ' area 0 password 123456\n'
                                        ' router-id 2.2.2.2\n'
                                        '!'}    
-									   
+                                       
 # test_openpyxl_data_plugin_with_templates_split_processor()
 
 def test_openpyxl_data_plugin_with_templates_filtering_processor():
@@ -289,3 +291,46 @@ def test_openpyxl_data_plugin_with_templates_filtering_processor():
                                       'template': 'test_path/device_base'}]
 
 # test_openpyxl_data_plugin_with_templates_filtering_processor()
+
+def test_openpyxl_data_plugin_with_multitemplate_processor_empty_header_cell():
+    generator = ttr("./mock_data/table_multiple_templates_empty_headers.xlsx", processors=["multitemplate"])
+    # pprint.pprint(generator.data_loaded)
+    assert generator.data_loaded == [{'device': 'r1',
+                                      'interface': 'Eth1',
+                                      'ip': '10.0.0.1',
+                                      'template': 'test_path/interf_cfg'},
+                                     {'device': 'r2',
+                                      'interface': 'Eth1',
+                                      'ip': '10.0.0.2',
+                                      'template': 'test_path/interf_cfg_b'},
+                                     {'device': 'r1',
+                                      'interface': 'Eth2',
+                                      'ip': '10.0.1.1',
+                                      'template': 'test_path/interf_cfg'},
+                                     {'device': 'r2',
+                                      'interface': 'Eth2',
+                                      'ip': '10.0.1.2',
+                                      'template': 'test_path/interf_cfg_b'}]
+    # pprint.pprint(generator.templates_dict)
+    assert generator.templates_dict == {'test_path/device_base': 'hostname {{ hostname }}\n'
+                                                                 '!\n'
+                                                                 'interface loopback0\n'
+                                                                 '  ip address {{ lo0_ip }} 255.255.255.255',
+                                        'test_path/device_base_rollback': 'no hostname {{ hostname }}\n'
+                                                                          '!\n'
+                                                                          'no interface loopback0',
+                                        'test_path/interf_cfg': 'interface {{ interface }}\n  ip address {{ ip }}',
+                                        'test_path/interf_cfg_b': 'interface {{ interface }}\n'
+                                                                  '  ip address {{ ip }} {{ mask }}'}
+    generator.run()
+    # pprint.pprint(generator.results)
+    assert generator.results == {'r1': 'interface Eth1\n'
+                                       '  ip address 10.0.0.1\n'
+                                       'interface Eth2\n'
+                                       '  ip address 10.0.1.1',
+                                 'r2': 'interface Eth1\n'
+                                       '  ip address 10.0.0.2 \n'
+                                       'interface Eth2\n'
+                                       '  ip address 10.0.1.2 '}
+                                                                       
+# test_openpyxl_data_plugin_with_multitemplate_processor_empty_header_cell()

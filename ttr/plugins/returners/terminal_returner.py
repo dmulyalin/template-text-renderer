@@ -5,7 +5,7 @@ Terminal Returner Plugin
 **Plugin Name:** ``terminal``
 
 This plugin prints rendered result to terminal screen
-applying minimal formating to improve readability.
+applying minimal formatting to improve readability.
 
 For instance if these are rendering results::
 
@@ -30,7 +30,7 @@ For instance if these are rendering results::
              ' ip address 10.0.2.1 255.255.255.0\\n'
              ' exit\\n'
              '!'}
-					
+
 Terminal returner will print to screen::
 
     # ---------------------------------------------------------------------------
@@ -50,7 +50,7 @@ Terminal returner will print to screen::
      ip address 10.0.3.1 255.255.255.0
      exit
     !
-    
+
     # ---------------------------------------------------------------------------
     # rt-2 rendering results
     # ---------------------------------------------------------------------------
@@ -61,21 +61,27 @@ Terminal returner will print to screen::
      ip address 10.0.2.1 255.255.255.0
      exit
     !
-	
-This returner useful for debugging or, for instance, when it is easier 
+
+This returner useful for debugging or, for instance, when it is easier
 to copy produced results from terminal screen.
 """
 
-def dump(data_dict, **kwargs):
+
+def dump(data_dict, **kwargs):  # pylint: disable=unused-argument
     """
     This function prints results to terminal screen
-    
-    :param data_dict: (dict) dictionary keyed by ``result_name_key`` where 
-                      values are rendered results string
+
+    :param data_dict: (dict) dictionary keyed by ``result_name_key`` where
+        values are rendered results string
+    :param kwargs: (dict) any additional arguments ignored
     """
     for key, value in data_dict.items():
-        print("""
+        print(
+            """
 # ---------------------------------------------------------------------------
 # {} rendering results
-# ---------------------------------------------------------------------------""".format(key))
+# ---------------------------------------------------------------------------""".format(
+                key
+            )
+        )
         print(value)

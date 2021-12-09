@@ -9,5 +9,5 @@ templates_loaders_plugins = {
     "xlsx": xlsx_template_loader.load,
     "ttr": ttr_template_loader.load,
     "file": file_template_loader.load,
-    "dir": dir_template_loader
+    "dir": dir_template_loader,
 }

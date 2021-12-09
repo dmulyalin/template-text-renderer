@@ -1,2 +1,2 @@
-from .ttr import ttr
-from .utils.cli import cli_tool
+from .ttr import ttr  # noqa
+from .utils.cli import cli_tool  # noqa

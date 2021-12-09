@@ -5,5 +5,5 @@ from . import filtering
 processors_plugins = {
     "multitemplate": multitemplate_processor.process,
     "templates_split": templates_split.process,
-    "filtering": filtering.process
+    "filtering": filtering.process,
 }

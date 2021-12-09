@@ -1,0 +1,47 @@
+module interface {
+    yang-version "1.1";
+
+    namespace "http://ttr/test-1";
+	
+    import ietf-inet-types {
+      prefix inet;
+    }
+
+    typedef ipmask {
+      type string {
+        pattern '([0-9]{1,3}\.){3}[0-9]{1,3}';
+      }
+	  description
+	    "Pattern to match strings like 255.255.255.0 or 255.0.0.0";
+    }
+	
+    prefix "ttr";
+  
+    leaf interface {
+        mandatory true;
+        type string;
+    }
+    leaf template {
+        mandatory true;
+        type string;
+    }
+    leaf device {
+        mandatory true;
+        type string;
+    }
+    leaf description{
+        type string;
+    }
+    leaf vid {
+        type int32;
+    }
+    leaf ip {
+        type inet:ipv4-address;
+    }
+    leaf mask {
+        type ipmask;
+    }
+    leaf vrf {
+        type string;
+    }
+}

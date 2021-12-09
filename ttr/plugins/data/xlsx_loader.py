@@ -8,7 +8,7 @@ This plugin supports loading data from multiple sheets, combining them for rende
 
 **Prerequisites:**
 
-- Requires `openpyxl <https://pypi.org/project/openpyxl/>`_ >= 3.0.0 library 
+- Requires `openpyxl <https://pypi.org/project/openpyxl/>`_ >= 3.0.0 library
 
 **Restrictions and guidelines**
 
@@ -159,7 +159,7 @@ Above table data, after passing through ``multitemplate`` processor loaded into 
     #   'template': 'ttr://simple/interface.cisco_nxos.txt'}]
 
 That technique allows to simplify definition of "paired" configurations, e.g. device A
-and device B configs or forward and rollback configurations etc.
+and device B configurations or forward and rollback configurations etc.
 """
 
 import logging
@@ -171,15 +171,23 @@ log = logging.getLogger(__name__)
 
 try:
     from openpyxl import load_workbook
+
 except ImportError:
-    log.error("Failed to import openpyxl module")
+    log.error("ttr:xlsx_loader failed to import openpyxl module")
 
 
 def load_data_from_sheet(sheet, ret, template_name_key):
+    """
+    Function to load data from sheet
+
+    :param sheet: (obj) openpyxl workbook sheet object
+    :param ret: (list) list to append loading results to
+    :param template_name_key: (str) templates column header name
+    """
     try:
         headers = []
         for i in range(1, sheet.max_column + 1):
-            if sheet.cell(row=1, column=i).value == None:
+            if sheet.cell(row=1, column=i).value is None:
                 headers.append(None)
             else:
                 headers.append(sheet.cell(row=1, column=i).value)
@@ -208,7 +216,6 @@ def load_data_from_sheet(sheet, ret, template_name_key):
             has_templates_column = True
             break
 
-
     if not has_templates_column:
         log.warning(
             "XLSX loader, no '{}' header on tab '{}', skipping it".format(
@@ -218,12 +225,14 @@ def load_data_from_sheet(sheet, ret, template_name_key):
         return
 
     # form data
-    log.debug("XLSX loader, loading data - tab: '{}', headers: '{}'".format(sheet.title, headers))
+    log.debug(
+        "XLSX loader, loading data - tab: '{}', headers: '{}'".format(
+            sheet.title, headers
+        )
+    )
     for row in sheet.iter_rows(min_row=2, values_only=True):
         # from data item
-        ret.append(
-            dict(zip(headers, row))
-        )
+        ret.append(dict(zip(headers, row)))
 
 
 def load(data, templates_dict, template_name_key, **kwargs):
@@ -244,11 +253,14 @@ def load(data, templates_dict, template_name_key, **kwargs):
     wb = load_workbook(data, **kwargs)
 
     for sheet_name in wb.sheetnames:
+
         if sheet_name.startswith("#"):
             log.debug("XLSX loader, skipping tab - '{}'".format(sheet_name))
             continue
-        elif "TEMPLATE" in sheet_name.upper():
+
+        if "TEMPLATE" in sheet_name.upper():
             templates_loaders_plugins["xlsx"](templates_dict, sheet=wb[sheet_name])
         else:
             load_data_from_sheet(wb[sheet_name], ret, template_name_key)
+
     return ret

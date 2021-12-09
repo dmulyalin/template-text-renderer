@@ -4,7 +4,7 @@ YAML loader
 
 **Plugin Name:** ``yaml``
 
-**Prerequisites:** 
+**Prerequisites:**
 
 - Requires PyYAML library
 
@@ -23,23 +23,30 @@ except ImportError:
     )
 
 
-def load(data, **kwargs):
+def load(
+    data, templates_dict=None, template_name_key=None, **kwargs
+):  # pylint: disable=unused-argument
     """
     Function to load YAML data from text file or from string. Text file should have
-	``.yml`` or ``.yaml`` extension to properly detect loader.
-    
+    ``.yml`` or ``.yaml`` extension to properly detect loader.
+
     :param data: string, OS path to text file or YAML structured text
+    :param templates_dict: (dict) dictionary to load templates from spreadsheet, not supported by yaml loader
+    :param template_name_key: (str) templates column header prefix, not supported by yaml loader
+    :param kwargs: (dict) any additional arguments are ignored
     """
     ret = None
-    
+
     # load from file
     if os.path.isfile(data[:1000]):
-        with open(data, newline='') as yamlfile:
+        with open(data, newline="") as yamlfile:
             ret = safe_load(yamlfile)
     # load as is
     elif isinstance(data, str):
         ret = safe_load(data)
     else:
-        raise SystemExit("yaml_loader, unsupported data, should be either OS path to file or text")
-        
+        raise SystemExit(
+            "yaml_loader, unsupported data, should be either OS path to file or text"
+        )
+
     return ret
