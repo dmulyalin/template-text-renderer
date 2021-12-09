@@ -1,3 +1,8 @@
+[![PyPI](https://img.shields.io/pypi/v/py-ttr.svg)](https://pypi.python.org/pypi/py-ttr)
+[![PyPI versions](https://img.shields.io/pypi/pyversions/py-ttr.svg)](https://pypi.python.org/pypi/py-ttr)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![Downloads](https://pepy.tech/badge/py-ttr)](https://pepy.tech/project/py-ttr)
+
 # Template Text Renderer - TTR
 
 Module to produce text files using templates. Have a look in [documentation](https://template-text-renderer.readthedocs.io) for details or install from [PyPi](https://pypi.org/project/py-ttr/0.1.0/).
@@ -12,9 +17,9 @@ Why you need TTR? How much time you spent generating configuration files steerin
 
 Pluggable systems are great, they are expendable, adaptable, re-usable, plugins functionality self contained etc.
 
-TTR is a pluggable framework, it supports simple work flow of:
+TTR is a pluggable framework that aims to implement this work flow:
 
-    load data -> load templates -> render (combine data with templates) -> get results
+    load data -> process data -> load data models -> validate data -> load templates -> render (combine data with templates) -> get results
 
 Where each step accompanied with a set of plugins to fulfill in the moment requirements.
 
