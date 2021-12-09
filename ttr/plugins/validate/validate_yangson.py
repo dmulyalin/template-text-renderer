@@ -22,6 +22,7 @@ except ImportError:
     )
     HAS_LIBS = False
 
+
 def validate(
     data,
     model_content,
@@ -31,14 +32,14 @@ def validate(
     on_fail="raise",
 ):
     """
-    Validate data for compliance with YANG modules.    
+    Validate data for compliance with YANG modules.
 
     :param data: (dict) dictionary data to validate
     :param model_content: (obj) Fully instantiated Yangson DataModel object
     :param model_name: (str) name of the model
-    :param content_type: (str) optional, content type as per 
+    :param content_type: (str) optional, content type as per
         https://yangson.labs.nic.cz/enumerations.html supported - all, config, nonconfig
-    :param validation_scope: (str) optional, validation scope as per 
+    :param validation_scope: (str) optional, validation scope as per
         https://yangson.labs.nic.cz/enumerations.html supported - all, semantics, syntax
     :param on_fail: (str) action to do if validation fails - ``raise`` (default) or ``log``
 
@@ -65,7 +66,9 @@ def validate(
     # run validation of data
     try:
         _data = {
-            "{}:{}".format(model_name, k) if not k.startswith("{}:".format(model_name)) else k: d
+            "{}:{}".format(model_name, k)
+            if not k.startswith("{}:".format(model_name))
+            else k: d
             for k, d in data.items()
         }
         inst = model_content.from_raw(_data)
@@ -77,7 +80,9 @@ def validate(
             )
         )
         if on_fail == "raise":
-            raise RuntimeError("ttr:validate_yangson: validation failed - '{}'".format(e))
+            raise RuntimeError(
+                "ttr:validate_yangson: validation failed - '{}'".format(e)
+            )
         if on_fail == "log":
             log.error("ttr:validate_yangson: validation failed - '{}'".format(e))
             return False

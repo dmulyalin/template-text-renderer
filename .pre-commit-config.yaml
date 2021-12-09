@@ -1,4 +1,4 @@
-# to run pre-commit on demand using below configuration: 
+# to run pre-commit on demand using below configuration:
 # pre-commit run --all-files
 
 default_language_version:
@@ -10,8 +10,10 @@ repos:
     hooks:
       - id: check-ast
       - id: end-of-file-fixer
+        exclude: ^tests/
       - id: requirements-txt-fixer
       - id: trailing-whitespace
+        exclude: ^tests/
       - id: check-added-large-files
         args: ['--maxkb=1000']
   # black
@@ -19,7 +21,7 @@ repos:
     rev: 19.3b0
     hooks:
       - id: black
-        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/
+        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/|pre-commit-config|pylintrc
         args:
           - "--line-length=88"
   # flake8
@@ -27,7 +29,7 @@ repos:
     rev: v2.3.0
     hooks:
       - id: flake8
-        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/
+        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/|pre-commit-config|pylintrc
         args:
           - "--max-line-length=88"
           - "--max-complexity=19"
@@ -38,7 +40,7 @@ repos:
     rev: 1.7.0
     hooks:
       - id: bandit
-        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/
+        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^templates/|pre-commit-config|pylintrc
   # pylint, to run it directly use: python3 -m pylint ./ttr/ --rcfile=pylintrc
   - repo: local
     hooks:
@@ -48,4 +50,4 @@ repos:
         language: system
         args:
           - "--rcfile=pylintrc"
-        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^ttr/templates/
+        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^ttr/templates/|pre-commit-config|pylintrc

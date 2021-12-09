@@ -7,9 +7,9 @@ Yangson models loader
 This plugin loads YANG models into yangson DataModel objects.
 
 YANG models must sit within their own directories, each such a directory used to create
-JSON library for Yangson to load models from. 
+JSON library for Yangson to load models from.
 
-Directory name, main YANG model file name and module name must be the same, directory 
+Directory name, main YANG model file name and module name must be the same, directory
 name used as a reference name for the model.
 
 For example, this is directory tree with YANG models inside::
@@ -20,7 +20,7 @@ For example, this is directory tree with YANG models inside::
             |-- interface.yang
         |-- vrf
             |-- vrf.yang
-    
+
 Above directory structure translated to two models named ``interface`` and ``vrf``, these
 names can be used to reference models in data for validation, e.g.::
 
@@ -38,13 +38,13 @@ For reference, YANG model ``Models/interface/interface.yang`` file content is::
 
     module interface {
         yang-version "1.1";
-    
+
         namespace "http://ttr/test-1";
-        
+
         import ietf-inet-types {
         prefix inet;
         }
-    
+
         typedef ipmask {
         type string {
             pattern '([0-9]{1,3}.){3}[0-9]{1,3}';
@@ -52,9 +52,9 @@ For reference, YANG model ``Models/interface/interface.yang`` file content is::
         description
             "Pattern to match strings like 255.255.255.0 or 255.0.0.0";
         }
-        
+
         prefix "ttr";
-    
+
         leaf interface {
             mandatory true;
             type string;
@@ -103,10 +103,11 @@ except ImportError:
     )
     HAS_LIBS = False
 
+
 def _module_entry(yfile, modmap, submodmap):
     """
     Add entry for one file containing YANG module text.
-    
+
     :param yfile: (file) File containing a YANG module or submodule.
     """
     data_kws = [
@@ -118,7 +119,7 @@ def _module_entry(yfile, modmap, submodmap):
         "rpc",
         "notification",
         "identity",
-    ] # Keywords of statements that contribute nodes to the schema tree
+    ]  # Keywords of statements that contribute nodes to the schema tree
     ytxt = yfile.read()
     mp = ModuleParser(ytxt)
     mst = mp.statement()
@@ -155,11 +156,11 @@ def _module_entry(yfile, modmap, submodmap):
 def _make_library(ydir):
     """
     Make JSON library of YANG modules.
-    
+
     :param ydir: (str) Name of the directory with YANG (sub)modules.
     """
-    modmap = {} # Dictionary for collecting module data
-    submodmap = {} # Dictionary for collecting submodule data
+    modmap = {}  # Dictionary for collecting module data
+    submodmap = {}  # Dictionary for collecting submodule data
     for infile in os.listdir(ydir):
         if not infile.endswith(".yang"):
             continue
@@ -181,12 +182,18 @@ def _make_library(ydir):
             try:
                 srec = submodmap[subm]
             except KeyError:
-                log.error("ttr:yangson_model_loader: Submodule {} not available.".format(subm))
+                log.error(
+                    "ttr:yangson_model_loader: Submodule {} not available.".format(subm)
+                )
                 return 1
             if srev is None or srev == srec["revision"]:
                 sen["revision"] = srec["revision"]
             else:
-                log.error("ttr:yangson_model_loader: Submodule {} revision mismatch.".format(subm))
+                log.error(
+                    "ttr:yangson_model_loader: Submodule {} revision mismatch.".format(
+                        subm
+                    )
+                )
                 return 1
             imp_only = imp_only or srec["import-only"]
             fts += srec["features"]
@@ -201,33 +208,43 @@ def _make_library(ydir):
     return json.dumps(res, indent=2)
 
 
-def load( # pylint: disable=unused-argument
-    models_dict,
-    models_dir,
-    **kwargs,
-):
+def load(models_dict, models_dir, **kwargs):  # pylint: disable=unused-argument
     """
     Creates JSON-encoded YANG library data [RFC7895] and instantiates data model object out of it.
 
-    :param models_dir: (str) OS path to directory with YANG models modules subdirectories, each 
-        subdirectory models loaded to form single DataModel and added to models_dict under 
+    :param models_dir: (str) OS path to directory with YANG models modules subdirectories, each
+        subdirectory models loaded to form single DataModel and added to models_dict under
         directory name key.
     :param models_dict: (dict) dictionary to store loaded model object at
     :param kwargs: (dict) any additional arguments ignored
     :param return: None
     """
     if not HAS_LIBS:
-        raise RuntimeError("ttr:yangson_model_loader: Failed to import yangson library, make sure it is installed.")
-        
+        raise RuntimeError(
+            "ttr:yangson_model_loader: Failed to import yangson library, make sure it is installed."
+        )
+
     # create models one per-directory under models_dir path
     for directory in os.listdir(models_dir):
         if directory in models_dict:
-            log.debug("ttr:yangson_module_loader model '{}' already loaded, skipping".format(directory))
+            log.debug(
+                "ttr:yangson_module_loader model '{}' already loaded, skipping".format(
+                    directory
+                )
+            )
             continue
         path = os.path.join(models_dir, directory)
         yang_modules_library = _make_library(path)
         if log.isEnabledFor(logging.DEBUG):
-            log.debug("ttr:yangson_module_loader constructed '{}' YANG modules library:\n{}".format(directory, yang_modules_library))
+            log.debug(
+                "ttr:yangson_module_loader constructed '{}' YANG modules library:\n{}".format(
+                    directory, yang_modules_library
+                )
+            )
         models_dict[directory] = DataModel(yltxt=yang_modules_library, mod_path=[path])
         if log.isEnabledFor(logging.DEBUG):
-            log.debug("ttr:yangson_module_loader loaded '{}' YANG model:\n{}".format(directory, models_dict[directory].ascii_tree()))        
+            log.debug(
+                "ttr:yangson_module_loader loaded '{}' YANG model:\n{}".format(
+                    directory, models_dict[directory].ascii_tree()
+                )
+            )

@@ -1,6 +1,6 @@
-pre-commit==2.*
+bandit==1.7.0
 black
 flake8==4.*
-bandit==1.7.0
-pylint
+pre-commit==2.*
 pyenchant
+pylint
