@@ -1,0 +1,18 @@
+inetrface Eth2
+ ip address 10.1.0.6 255.255.255.252
+ description R1 - Gi2/3
+ mtu 2048
+ no shutdown
+!
+inetrface Eth5
+ ip address 10.1.0.9 255.255.255.252
+ description R4 - Gi1/0/1
+ mtu 1500
+ no shutdown
+!
+inetrface Eth6
+ ip address 10.1.0.13 255.255.255.252
+ description R5 - Te0/0/0.147
+ mtu 9600
+ no shutdown
+!

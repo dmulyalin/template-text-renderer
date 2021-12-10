@@ -1,0 +1,6 @@
+inetrface Eth1
+ ip address 10.1.0.2 255.255.255.252
+ description R1 - Gi1/1
+ mtu 1500
+ no shutdown
+!

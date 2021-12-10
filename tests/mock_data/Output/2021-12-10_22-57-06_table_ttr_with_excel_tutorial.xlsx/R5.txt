@@ -1,0 +1,30 @@
+hostname R5
+!
+snmp-server community Read0NLy RO
+snmp-server location R5, ASR9001, CORE, 53 Route, City-E
+!
+inetrface loopback0
+ ipv4 address 10.0.0.5 255.255.255.255
+ description RID Loopback
+!
+interface mgmt0
+ ipv4 address 10.1.5.98 255.255.255.128
+ no shutdown
+!
+router bgp 65101
+ bgp router-id 10.0.0.5
+ address-family ipv4 unicast
+ address-family ipv6 unicast
+!
+inetrface Te0/0/0.147
+ ipv4 address 10.1.0.14 255.255.255.252
+ description R3 - Eth6
+ mtu 9600
+ no shutdown
+!
+inetrface Te0/0/0.631
+ ipv4 address 10.1.0.18 255.255.255.252
+ description R4 - Gi1/0/14
+ mtu 9600
+ no shutdown
+!

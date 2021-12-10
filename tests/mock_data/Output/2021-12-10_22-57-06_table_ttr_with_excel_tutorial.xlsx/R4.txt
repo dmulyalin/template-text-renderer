@@ -1,0 +1,12 @@
+inetrface Gi1/0/1
+ ip address 10.1.0.10 255.255.255.252
+ description R3 - Eth5
+ mtu 1500
+ no shutdown
+!
+inetrface Gi1/0/14
+ ip address 10.1.0.17 255.255.255.252
+ description R5 - Te0/0/0.631
+ mtu 9600
+ no shutdown
+!
