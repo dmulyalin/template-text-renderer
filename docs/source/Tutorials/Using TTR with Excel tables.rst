@@ -110,8 +110,8 @@ per-device rendering results::
 Next Steps
 **********
 
-Data and templates does not have to be defined inside of the same Excel document, in fact it is better
-to keep them separate. For example we move templates to ``templates.xlsx`` spreadsheet we can use this 
+Data and templates does not have to be defined inside the same Excel document, in fact it is better
+to keep them separate. For example, if we move templates to ``templates.xlsx`` spreadsheet we can use this 
 command to generate results::
 
     ttr -d table_ttr_with_excel_tutorial.xlsx -t templates.xlsx
@@ -132,10 +132,10 @@ your devices' configurations.
 Conclusion
 **********
 
-In a few seconds seconds with a single command TTR can produce network devices configurations out of excel table,
+In a few seconds with a single command TTR can produce network devices configurations out of excel table,
 that can be very powerful tool to streamline the process of building consistent configuration using a collection 
 of tested and verified templates. Introducing fixes becomes easier, adding new devices becomes a matter of populating 
-excel spreadsheet. Excel formulas can help to simplify editing, deleting, sorting and searching through your data.
+excel spreadsheet. Excel features can help to simplify editing, deleting, sorting and searching through your data.
 
 Hope this tutorial was useful, thank you for reading.
 
