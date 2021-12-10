@@ -36,7 +36,7 @@ Defining Data
 *************
 
 Next, need to define data, as promised, going to use Excel spreadsheets for that. Create file named 
-``sample_data.xlsx``. Going to populate 4 tabs in it.
+``table_ttr_with_excel_tutorial.xlsx``. Going to populate 4 tabs in it.
 
 First tab called "devices" and used to fill in data for device's base parameters such as loopback0 and management IP 
 addresses, BGP ASN number, location, platform etc. Tab content is:
