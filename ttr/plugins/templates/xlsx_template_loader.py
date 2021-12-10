@@ -19,7 +19,7 @@ Sample table that contains rendering templates, no headers required:
 +---------------------------------+
 | interface {{ interface }}       |
 +---------------------------------+
-|  description {{ description }} |
+|  description {{ description }}  |
 +---------------------------------+
 | template:logging                |
 +---------------------------------+

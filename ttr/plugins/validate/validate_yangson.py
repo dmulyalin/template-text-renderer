@@ -1,5 +1,5 @@
 """
-Yangson data validation
+Yangson Data Validation
 ***********************
 
 **Reference name** ``yangson``

@@ -1,5 +1,5 @@
 """
-Yangson models loader
+Yangson Models Loader
 *********************
 
 **Reference name** ``yangson``

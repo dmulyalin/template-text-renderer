@@ -7,6 +7,7 @@ Table of Content
    Overview
    Installation
    Quick Start
+   Tutorials/index
    TTR CLI tool
    Data Loader Plugins
    Processors Plugins
@@ -14,5 +15,5 @@ Table of Content
    Templates Loader Plugins
    Renderer Plugins
    Returner Plugins
-   Examples
    Templates Collection/index
+   API Reference

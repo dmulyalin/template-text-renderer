@@ -2,7 +2,7 @@
 TTR CLI tool
 ############
 
-TTR CLI is an example of tool built using TTR library.
+TTR CLI is a tool built using TTR library.
 
 This tool can be used to render data from various sources and either
 print results to screen or save them in output folder.

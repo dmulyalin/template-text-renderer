@@ -1,6 +1,6 @@
 """
-Template Text Renderer - TTR
-############################
+Overview
+########
 
 Module to produce text files using templates. TTR targets to implement common work flow:
 
@@ -18,15 +18,13 @@ Where:
 
 - data plugins - load data from various format and transform it in a list of dictionaries
 - processor plugins - optional step, but can be used to process data before rendering
+- validation plugins - optional step, used to validate data before rendering it
 - template loaders - retrieve template content from various sources (files, directories etc.)
 - renderes - iterate over list of dictionaries data and render each item with template
 - returners - return rendering results to various destinations, e.g. save to file system
 
 In addition, TTR comes with a collection of Jinja2 templates to help with common use cases,
 such as generating configuration for network devices interfaces or BGP peers.
-
-How it works
-============
 
 On the base level TTR takes list of dictionaries, renders each dictionary with template
 defined in ``template_name_key`` and saves rendered data in results dictionary keyed by
@@ -35,13 +33,6 @@ and ``result_name_key`` keys.
 
 Various plugins can be used to load data in a list of dictionaries with other plugins
 helping to process and validate it, render and save results.
-
-TTR API reference
-=================
-
-.. autoclass:: ttr.ttr
-  :noindex:
-  :members:
 """
 import logging
 import os
@@ -287,6 +278,21 @@ class ttr:
                 template_name=template_name,
             )
 
+    def run_returner(self, results=None, returner=None, **kwargs):
+        """
+        Function to run returner to return results via plugin of choice.
+
+        :param results: (dict) results to run returner for
+        :param returner: (str) returner plugin name e.g. self, file, terminal
+        :param kwargs: (dict) additional arguments for returner plugin
+        """
+        results = results or self.results
+        returner = returner or self.returner
+        kwargs = kwargs or self.returner_kwargs
+
+        log.debug("Returning results using '{}' returner".format(returner))
+        returners_plugins[returner](results, **kwargs)
+
     def run(self):
         """
         Method to render templates with data and produce dictionary results
@@ -294,7 +300,6 @@ class ttr:
 
         If returner set to ``self``, will return results dictionary.
         """
-        # generate results
         log.debug("Rendering data using '{}' renderer".format(self.renderer))
         self.results = renderers_plugins[self.renderer](
             self.data_loaded,
@@ -304,11 +309,6 @@ class ttr:
             self.result_name_key,
             **self.renderer_kwargs,
         )
-        # return results
-        log.debug("Returning results using '{}' returner".format(self.returner))
-        returners_plugins[self.returner](self.results, **self.returner_kwargs)
+        self.run_returner()
         log.debug("TTR rendering run completed")
-        if self.returner == "self":
-            return self.results
-
-        return None
+        return self.results if self.returner == "self" else None
