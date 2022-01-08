@@ -14,7 +14,7 @@ interface {{ interface }}
  encapsulation dot1q {{ vid }}
 {% endif %}
 {% if vrf is defined %}
- vrf forwarding  {{ vrf }}
+ vrf forwarding {{ vrf }}
 {% endif %}
 {% if ip is defined and mask is defined %}
  ip address {{ ip }} {{ mask }}
@@ -60,7 +60,7 @@ interface {{ interface }}
                                'interface Gi1/1\n'
                                ' description Customer A\n'
                                ' encapsulation dot1q 100\n'
-                               ' vrf forwarding  cust_a\n'
+                               ' vrf forwarding cust_a\n'
                                ' ip address 10.0.0.1 255.255.255.0\n'
                                ' exit\n'
                                '!\n'
@@ -68,7 +68,7 @@ interface {{ interface }}
                                'interface Gi1/2\n'
                                ' description Customer C\n'
                                ' encapsulation dot1q 300\n'
-                               ' vrf forwarding  cust_c\n'
+                               ' vrf forwarding cust_c\n'
                                ' ip address 10.0.3.1 255.255.255.0\n'
                                ' exit\n'
                                '!',
@@ -76,7 +76,7 @@ interface {{ interface }}
                                'interface Gi1/2\n'
                                ' description Customer B\n'
                                ' encapsulation dot1q 200\n'
-                               ' vrf forwarding  cust_b\n'
+                               ' vrf forwarding cust_b\n'
                                ' ip address 10.0.2.1 255.255.255.0\n'
                                ' exit\n'
                                '!'}
@@ -167,19 +167,19 @@ def test_xlsx_data_loader_example():
     results = gen.run()
     assert results == {'rt1': 'interface Gi1/1.100\n'
                               ' encapsulation dot1q 100\n'
-                              ' vrf forwarding  MGMT\n'
+                              ' vrf forwarding MGMT\n'
                               ' ip address 10.0.0.1 24\n'
                               ' exit\n'
                               '!\n'
                               'interface Gi2/3\n'
                               ' encapsulation dot1q None\n'
-                              ' vrf forwarding  CUST\n'
+                              ' vrf forwarding CUST\n'
                               ' ip address 10.3.0.1 30\n'
                               ' exit\n'
                               '!',
                        'sw23': 'interface Vlan21\n'
                                ' encapsulation dot1q None\n'
-                               ' vrf forwarding  MGMT\n'
+                               ' vrf forwarding MGMT\n'
                                ' ip address 10.0.0.2 24\n'
                                ' exit\n'
                                '!'}

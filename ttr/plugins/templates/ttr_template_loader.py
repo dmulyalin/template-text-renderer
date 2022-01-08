@@ -40,7 +40,7 @@ def load(template_name, templates_dict, **kwargs):  # pylint: disable=unused-arg
 
     # load template content
     try:
-        with open(template_filepath, "r") as f:
+        with open(template_filepath, encoding="UTF-8", mode="r") as f:
             templates_dict[template_name] = f.read()
     except:
         log.error(

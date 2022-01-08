@@ -30,10 +30,10 @@ def load(
     # load template content
     try:
         if filepath and os.path.isfile(filepath):
-            with open(filepath, "r") as f:
+            with open(filepath, encoding="UTF-8", mode="r") as f:
                 templates_dict[template_name] = f.read()
         elif os.path.isfile(template_name):
-            with open(template_name, "r") as f:
+            with open(template_name, encoding="UTF-8", mode="r") as f:
                 templates_dict[template_name] = f.read()
         else:
             raise RuntimeError(

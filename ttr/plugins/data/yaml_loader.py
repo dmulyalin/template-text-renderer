@@ -39,7 +39,7 @@ def load(
 
     # load from file
     if os.path.isfile(data[:1000]):
-        with open(data, newline="") as yamlfile:
+        with open(data, newline="", encoding="UTF-8") as yamlfile:
             ret = safe_load(yamlfile)
     # load as is
     elif isinstance(data, str):

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as f:
+with open("README.md", encoding="UTF-8", mode="r") as f:
     long_description = f.read()
 
 __author__ = "Denis Mulyalin <d.mulyalin@gmail.com>"

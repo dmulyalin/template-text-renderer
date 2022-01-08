@@ -38,7 +38,7 @@ def load(
 
     # load from file
     if os.path.isfile(data):
-        with open(data, newline="") as csvfile:
+        with open(data, newline="", encoding="UTF-8") as csvfile:
             reader = csv.DictReader(csvfile, **kwargs)
             ret = [dict(row) for row in reader]
     # load all csv files from folder
