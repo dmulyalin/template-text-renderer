@@ -50,4 +50,4 @@ repos:
         language: system
         args:
           - "--rcfile=pylintrc"
-        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^ttr/templates/|pre-commit-config|pylintrc
+        exclude: ^tests/|^docs/|^Executable/|gitignore|README|LICENSE|MANIFEST|requirements|^ttr/templates/|pre-commit-config|pylintrc|^\.github

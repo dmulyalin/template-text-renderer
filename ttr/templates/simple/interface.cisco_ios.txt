@@ -6,7 +6,7 @@ interface {{ interface }}
  encapsulation dot1q {{ vid }}
 {% endif %}
 {% if vrf is defined %}
- vrf forwarding  {{ vrf }}
+ vrf forwarding {{ vrf }}
 {% endif %}
 {% if ip is defined and mask is defined %}
  ip address {{ ip }} {{ mask }}
