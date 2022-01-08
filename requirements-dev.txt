@@ -6,5 +6,6 @@ openpyxl==3.*
 pre-commit==2.*
 pyenchant
 pylint
+pytest==5.*
 PyYAML==5.*
 yangson==1.*
