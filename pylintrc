@@ -25,6 +25,7 @@ disable=
     format,
     missing-module-docstring,
     consider-using-f-string,
+    duplicate-code,
 
 [DESIGN]
 

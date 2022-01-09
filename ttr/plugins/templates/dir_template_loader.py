@@ -35,7 +35,7 @@ def load(
 
     # load template content
     try:
-        with open(template_filepath, "r") as file:
+        with open(template_filepath, encoding="UTF-8", mode="r") as file:
             templates_dict[template_name] = file.read()
     except:
         log.error(
