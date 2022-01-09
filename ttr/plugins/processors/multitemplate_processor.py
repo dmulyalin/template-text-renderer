@@ -80,7 +80,7 @@ def process(data, template_name_key, **kwargs):  # pylint: disable=unused-argume
 
         # check if need to form headers_to_endings dictionary of {ending: [headers]}
         if headers != previous_headers:
-            endings = tuple(
+            endings = tuple(  # pylint: disable=consider-using-generator
                 [
                     h.replace(template_name_key, "")
                     for h in headers

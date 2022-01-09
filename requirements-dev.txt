@@ -4,8 +4,8 @@ flake8==4.*
 Jinja2==2.*
 openpyxl==3.*
 pre-commit==2.*
-pyenchant
-pylint
+pyenchant==3.*
+pylint==2.*
 pytest==5.*
 PyYAML==5.*
 yangson==1.*
